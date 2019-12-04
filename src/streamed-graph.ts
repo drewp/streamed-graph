@@ -7,6 +7,9 @@ import { PolymerElement, html } from '@polymer/polymer';
 import { customElement, property, computed } from '@polymer/decorators';
 import { render } from 'lit-html';
 // import { graphView } from '/rdf/browse/graphView.js';
+
+
+
 import { StreamedGraphClient } from './streamed_graph_client';
 
 @customElement('streamed-graph')
@@ -66,12 +69,12 @@ class StreamedGraph extends PolymerElement {
 
     _onUrl(url) {
         // if (this.sg) { this.sg.close(); }
-        this.sg = new StreamedGraphClient(
-            url, 
-            this.onGraphChanged.bind(this), 
-            this.set.bind(this, 'status'), 
-            [],//window.NS,
-            []);
+        // this.sg = new StreamedGraphClient(
+        //     url, 
+        //     this.onGraphChanged.bind(this), 
+        //     this.set.bind(this, 'status'), 
+        //     [],//window.NS,
+        //     []);
     }
 
     onGraphChanged() {

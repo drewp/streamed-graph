@@ -10,10 +10,10 @@ import { Store, DataFactory } from "n3"
 const EventSource = window.EventSource;
 
 export class StreamedGraphClient {
-    // onStatus: (msg: string) => void;
-    // onGraphChanged: () => void;
-    // store: Store;
-    // events: EventSource;
+    onStatus: (msg: string) => void;
+    onGraphChanged: () => void;
+    store: Store;
+    events: EventSource;
     constructor(
         eventsUrl: string,
         onGraphChanged: () => void,
@@ -27,14 +27,14 @@ export class StreamedGraphClient {
     //     this.onGraphChanged = onGraphChanged;
     //     this.onStatus('startup...');
 
-    //     this.store = new Store({});
+        this.store = new Store({});
 
     //     //             Object.keys(prefixes).forEach((prefix) => {
     //     //                 this.store.setPrefix(prefix, prefixes[prefix]);
     //     //             });
 
-    //     this.connect(eventsUrl);
-    //     this.reconnectOnWake();
+        this.connect(eventsUrl);
+        this.reconnectOnWake();
 
     //     staticGraphUrls.forEach((url) => {
     //         fetch(url).then((response) => response.text())
@@ -45,47 +45,47 @@ export class StreamedGraphClient {
 
     }
 
-    // reconnectOnWake() {
-    //     // it's not this, which fires on every mouse-in on a browser window, and doesn't seem to work for screen-turned-back-on
-    //     //window.addEventListener('focus', function() { this.connect(eventsUrl); }.bind(this));
+    reconnectOnWake() {
+        // it's not this, which fires on every mouse-in on a browser window, and doesn't seem to work for screen-turned-back-on
+        //window.addEventListener('focus', function() { this.connect(eventsUrl); }.bind(this));
 
-    // }
+    }
 
-    // connect(eventsUrl: string) {
-    //     // need to exit here if this obj has been replaced
+    connect(eventsUrl: string) {
+        // need to exit here if this obj has been replaced
 
-    //     this.onStatus('start connect...');
-    //     this.close();
-    //     if (this.events && this.events.readyState != EventSource.CLOSED) {
-    //         this.onStatus('zombie');
-    //         throw new Error("zombie eventsource");
-    //     }
+        this.onStatus('start connect...');
+        // this.close();
+        if (this.events && this.events.readyState != EventSource.CLOSED) {
+            this.onStatus('zombie');
+            throw new Error("zombie eventsource");
+        }
 
 
-    //     this.events = new EventSource(eventsUrl);
+        this.events = new EventSource(eventsUrl);
 
-    //     this.events.addEventListener('error', (ev) => {
-    //         // todo: this is piling up tons of retries and eventually multiple connections
-    //         this.testEventUrl(eventsUrl);
-    //         this.onStatus('connection lost- retrying');
-    //         setTimeout(() => {
-    //             requestAnimationFrame(() => {
-    //                 this.connect(eventsUrl);
-    //             });
-    //         }, 3000);
-    //     });
+        this.events.addEventListener('error', (ev) => {
+            // todo: this is piling up tons of retries and eventually multiple connections
+            // this.testEventUrl(eventsUrl);
+            this.onStatus('connection lost- retrying');
+            setTimeout(() => {
+                requestAnimationFrame(() => {
+                    this.connect(eventsUrl);
+                });
+            }, 3000);
+        });
 
-    //     this.events.addEventListener('fullGraph', (ev) => {
-    //         // this.updates.push({ type: 'fullGraph', data: ev.data });
-    //         // this.flushUpdates();
-    //     });
+        this.events.addEventListener('fullGraph', (ev) => {
+            // this.updates.push({ type: 'fullGraph', data: ev.data });
+            // this.flushUpdates();
+        });
 
-    //     this.events.addEventListener('patch', (ev) => {
-    //         // this.updates.push({ type: 'patch', data: ev.data });
-    //         // this.flushUpdates();
-    //     });
-    //     this.onStatus('connecting...');
-    // }
+        this.events.addEventListener('patch', (ev) => {
+            // this.updates.push({ type: 'patch', data: ev.data });
+            // this.flushUpdates();
+        });
+        this.onStatus('connecting...');
+    }
 
     // replaceFullGraph(jsonLdText: string, done: () => void) {
     //     // this.quadStore.clear();

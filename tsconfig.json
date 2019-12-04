@@ -5,13 +5,13 @@
         "target": "es6",
         "rootDirs": [
             "node_modules",
-            "src"
+            // "src"
         ],
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true
     },
     "files": [
         "./src/streamed-graph.ts",
-        "./src/streamed_graph_client.ts"
+        // "./src/streamed_graph_client.ts"
     ]
 }
