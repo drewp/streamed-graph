@@ -5,6 +5,8 @@ const config: webpack.Configuration = {
     mode: "development",
     entry: [
         './src/streamed-graph.ts',
+        './src/streamed_graph_client.ts',
+        
         './src/streamed-graph.css'   // doesn't emit anything
     ],
     output: {
