@@ -12,6 +12,8 @@ import { render } from 'lit-html';
 
 import { StreamedGraphClient } from './streamed_graph_client';
 
+console.log(StreamedGraphClient);
+
 @customElement('streamed-graph')
 class StreamedGraph extends PolymerElement {
     @property({ type: String })

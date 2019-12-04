@@ -106,10 +106,6 @@ export class StreamedGraphClient {
     patchGraph(patchJson: string, done: () => void) {
         var patch = JSON.parse(patchJson).patch;
 
-        // if (!this.store) {
-        //     throw new Error('store ' + this.store);
-        // }
-
         async.series([
             // (done) => {
             //     eachJsonLdQuad(this.store.rdf, patch.deletes,
