@@ -1,17 +1,23 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
-        "experimentalDecorators": true,
-        "target": "es6",
-        "rootDirs": [
-            "node_modules",
-            // "src"
-        ],
+        "allowSyntheticDefaultImports": true,
+        "baseUrl": "./",
+        "declaration": true,
+        "emitDecoratorMetadata": true,
         "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true
-    },
-    "files": [
-        "./src/streamed-graph.ts",
-        // "./src/streamed_graph_client.ts"
-    ]
+        "experimentalDecorators": true,
+        "incremental": true,
+        "lib": ["es6", "dom"],
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "rootDirs": ["node_modules"],
+        "target": "es6",
+        // "importHelpers": true,
+        // "removeComments": true,
+        // "rootDir": ".",
+        // "sourceMap": true,
+        // "types": ["node"],
+        // // "outDir": "../../dist/server-root",
+    }
 }

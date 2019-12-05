@@ -5,8 +5,6 @@ const config: webpack.Configuration = {
     mode: "development",
     entry: [
         './src/streamed-graph.ts',
-        // './src/streamed_graph_client.ts',
-        
         './src/streamed-graph.css'   // doesn't emit anything
     ],
     output: {
@@ -17,13 +15,13 @@ const config: webpack.Configuration = {
         alias: {
             'webpack-plugin-serve/client': './node_modules/webpack-plugin-serve/client.js',
         },
+        extensions: ['.ts', '.js', '.json']
     },
     module: {
         rules: [
             { test: /\.ts$/, use: 'ts-loader', exclude: /node_modules/ },
             { test: /\.css$/i, use: ['file-loader'] },
-        ],
-
+        ]
     },
     devServer: {
         port: 8082,
