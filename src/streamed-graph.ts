@@ -6,13 +6,10 @@ import '@polymer/polymer/lib/elements/dom-bind.js';
 import { PolymerElement, html } from '@polymer/polymer';
 import { customElement, property, computed } from '@polymer/decorators';
 import { render } from 'lit-html';
-// import { graphView } from '/rdf/browse/graphView.js';
-
-
+import { graphView } from './graph_view';
+import { Store, DataFactory } from "n3"
 
 import { StreamedGraphClient } from './streamed_graph_client';
-
-console.log(StreamedGraphClient);
 
 @customElement('streamed-graph')
 class StreamedGraph extends PolymerElement {
@@ -20,7 +17,7 @@ class StreamedGraph extends PolymerElement {
     url: string = '';
 
     @property({ type: Object })
-    graph: Object;
+    graph: {version: number, graph: Store};
 
     @property({ type: Boolean })
     expanded: Boolean = false;
@@ -45,13 +42,15 @@ class StreamedGraph extends PolymerElement {
                 StreamedGraph <a href="{{url}}">[source]</a>:
                 {{status}}
             </div>
-            <div id="graphView">graph here
-            </div>`;
+            <div id="graphView"></div>`;
     }
 
     ready() {
         super.ready();
+        this.graph = {version: -1, graph: null};
         this.graphView = this.shadowRoot.getElementById("graphView");
+
+        this._onUrl(this.url); // todo: watch for changes and rebuild
     }
 
     toggleExpand(ev) {
@@ -70,17 +69,18 @@ class StreamedGraph extends PolymerElement {
     }
 
     _onUrl(url) {
-        // if (this.sg) { this.sg.close(); }
-        // this.sg = new StreamedGraphClient(
-        //     url, 
-        //     this.onGraphChanged.bind(this), 
-        //     this.set.bind(this, 'status'), 
-        //     [],//window.NS,
-        //     []);
+        if (this.sg) { this.sg.close(); }
+        this.sg = new StreamedGraphClient(
+            url,
+            this.onGraphChanged.bind(this),
+            this.set.bind(this, 'status'),
+            [],//window.NS,
+            []
+        );
     }
 
     onGraphChanged() {
-        //this.graph = { version: this.graph.version + 1, graph: this.sg };
+        this.graph = { version: this.graph.version + 1, graph: this.sg.store };
         if (this.expanded) {
             this.redrawGraph();
         }
@@ -88,7 +88,7 @@ class StreamedGraph extends PolymerElement {
 
     _redrawLater() {
         if (!this.graphViewDirty) return;
-        //render(graphView(this.graph.graph), this.graphView);
+        render(graphView(this.graph.graph), this.graphView);
         this.graphViewDirty = false;
     }
 

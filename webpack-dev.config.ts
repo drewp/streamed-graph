@@ -29,12 +29,6 @@ const config: webpack.Configuration = {
         liveReload: true, // doesn't work
         overlay: true,
         watchContentBase: true,
-        // proxy: {
-        //     '/rdf': {
-        //         target: 'https://bigasterisk.com/',
-        //         //pathRewrite: {'^/api' : ''}  
-        //     }
-        // },
     }
 };
 

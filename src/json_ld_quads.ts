@@ -1,46 +1,34 @@
-import { Quad, Node } from "./rdf_types";
 import * as jsonld from "jsonld";
+import { DataFactory, Quad } from 'n3';
+const { namedNode, literal, quad } = DataFactory;
+import ns from 'n3/src/IRIs';
+const {rdf} = ns;
 
-function quadFromExpandedStatement(rdfEnv: any, subj: any, pred: string, obj: any, graphNode: any): Quad {
-    return {
-        subject: rdfEnv.createNamedNode(subj['@id']),
-        predicate: rdfEnv.createNamedNode(pred),
-        object: (obj['@id'] ? rdfEnv.createNamedNode(obj['@id']) :
-            rdfEnv.createLiteral(obj['@value'], obj['@language'], obj['@type'])),
-        graph: graphNode,
-    };
-}
-function quadFromTypeStatement(rdfEnv: any, subj: any, obj: any, graphNode: any): Quad {
-    return {
-        subject: rdfEnv.createNamedNode(subj['@id']),
-        predicate: rdfEnv.createNamedNode('rdf:type'),
-        object: rdfEnv.createNamedNode(obj),
-        graph: graphNode,
-    };
-}
-
-export function eachJsonLdQuad(rdfEnv: any, jsonLdObj: object, onQuad: (Quad) => void, done: () => void) {
+export function eachJsonLdQuad(jsonLdObj: object, onQuad: (q: Quad) => void, done: () => void) {
     jsonld.expand(jsonLdObj, function onExpand(err, expanded) {
         if (err) {
             throw new Error();
         }
         (expanded as [object]).forEach(function (g) {
             var graph = g['@id'];
-            var graphNode = rdfEnv.createNamedNode(graph) as Node;
+            var graphNode = namedNode(graph);
             g['@graph'].forEach(function (subj) {
+                const subjNode = namedNode(subj['@id']);
                 for (let pred in subj) {
-                    if (pred.match(/^[^@]/)) {
-                        subj[pred].forEach(function (obj) {
-                            onQuad(quadFromExpandedStatement(rdfEnv, subj, pred, obj, graphNode));
-                        });
+                    if (pred === '@id') {
+                        continue;
                     }
-                    else {
-                        if (pred === "@type") {
-                            subj[pred].forEach((obj) => {
-                                onQuad(quadFromTypeStatement(rdfEnv, subj, obj, graphNode));
-                            });
-                        }
+                    let predNode;
+                    if (pred === "@type") {
+                        predNode = namedNode(rdf.type);
+                    } else {
+                        predNode = namedNode(pred['@id']);
                     }
+                    subj[pred].forEach(function (obj) {
+                        const objNode = (obj['@id'] ? namedNode(obj['@id']) :
+                            literal(obj['@value'], obj['@language'] || obj['@type']));
+                        onQuad(quad(subjNode, predNode, objNode, graphNode));
+                    });
                 }
             });
         });
