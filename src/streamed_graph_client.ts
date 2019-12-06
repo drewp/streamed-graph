@@ -4,7 +4,7 @@ import * as async from "async";
 // import * as jsonld from "jsonld";
 
 import { eachJsonLdQuad } from "./json_ld_quads";
-import { Store, DataFactory } from "n3"
+import { Store } from "n3"
 
 // /// <reference types="eventsource" />
 // const EventSource = window.EventSource;

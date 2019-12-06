@@ -1,18 +1,22 @@
 // from /my/site/homepage/www/rdf/browse/graphView.js
 
-import { html } from 'lit-html';
-import { SuffixLabels } from './suffixLabels.js';
-import { Store, Quad, DataFactory } from "n3"
-const { namedNode, literal, quad } = DataFactory;
+/// <reference types="./n3.d.ts">
 
-const groupByRdfType = (graph: Store) => {
-  const env = graph.store.rdf;
-  const rdfType = env.createNamedNode('rdf:type');
-  const byType = new Map(); // type : subjs
+import { html } from 'lit-html';
+import { SuffixLabels } from './suffixLabels';
+
+import { NamedNode, N3Store } from 'n3';
+
+import ns from 'n3/src/IRIs';
+const {rdf} = ns;
+
+const groupByRdfType = (graph: N3Store) => {
+  const rdfType = new NamedNode(rdf.type);
+  const byType: Map<NamedNode, Set<NamedNode>> = new Map(); // type : subjs
   const untyped = new Set(); // subjs
-  graph.quadStore.quads({}, (q) => {
+  graph.getQuads({}, (q) => {
     let subjType = null;
-    graph.quadStore.quads({
+    graph.getQuads({
       subject: q.subject,
       predicate: rdfType
     },
@@ -31,15 +35,13 @@ const groupByRdfType = (graph: Store) => {
   return { byType: byType, untyped: untyped };
 };
 
-const graphView = (graph: Store) => {
-  const env = graph.store.rdf;
-
+const graphView = (graph: N3Store) => {
   const labels = new SuffixLabels();
-  graph.quadStore.quads({}, (q) => {
+  graph.getQuads({}, (q) => {
     if (q.subject.interfaceName == "NamedNode") { labels.planDisplayForNode(q.subject); }
     if (q.predicate.interfaceName == "NamedNode") { labels.planDisplayForNode(q.predicate); }
     if (q.object.interfaceName == "NamedNode") { labels.planDisplayForNode(q.object); }
-    if (q.object.interfaceName == "Literal" && q.object.datatype) { labels.planDisplayForNode(env.createNamedNode(q.object.datatype)); }
+    if (q.object.interfaceName == "Literal" && q.object.datatype) { labels.planDisplayForNode(new NamedNode(q.object.datatype)); }
   });
 
   const rdfNode = (n) => {
@@ -48,7 +50,7 @@ const graphView = (graph: Store) => {
       if (n.datatype) {
         dtPart = html`
         ^^<span class="literalType">
-          ${rdfNode(env.createNamedNode(n.datatype))}
+          ${rdfNode(new NamedNode(n.datatype))}
         </span>`;
       }
       return html`<span class="literal">${n.nominalValue}${dtPart}</span>`;
@@ -74,7 +76,7 @@ const graphView = (graph: Store) => {
   /// bunch of table rows
   const predBlock = (subj, pred) => {
     const objsSet = new Set();
-    graph.quadStore.quads({ subject: subj, predicate: pred }, (q) => {
+    graph.getQuads({ subject: subj, predicate: pred }, (q) => {
 
       if (q.object.length) {
         console.log(q.object)
@@ -100,9 +102,9 @@ const graphView = (graph: Store) => {
   untypedSubjs.sort();
 
   const subjBlock = (subj) => {
-    const subjNode = env.createNamedNode(subj);
+    const subjNode = new NamedNode(subj);
     const predsSet = new Set();
-    graph.quadStore.quads({ subject: subjNode }, (q) => {
+    graph.getQuads({ subject: subjNode }, (q) => {
       predsSet.add(q.predicate);
     });
     const preds = Array.from(predsSet.values());
@@ -124,7 +126,7 @@ const graphView = (graph: Store) => {
     const preds = new Set();
 
     subjs.forEach((subj) => {
-      graph.quadStore.quads({ subject: env.createNamedNode(subj) }, (q) => {
+      graph.getQuads({ subject: new NamedNode(subj) }, (q) => {
         preds.add(q.predicate.toString());
         const cellKey = subj + '|||' + q.predicate.toString();
         if (!graphCells.has(cellKey)) {
@@ -140,7 +142,7 @@ const graphView = (graph: Store) => {
 
     const thead = () => {
       const predColumnHead = (pred) => {
-        return html`<th>${rdfNode(env.createNamedNode(pred))}</th>`;
+        return html`<th>${rdfNode(new NamedNode(pred))}</th>`;
       };
       return html`
               <thead>
@@ -167,14 +169,14 @@ const graphView = (graph: Store) => {
 
       return html`
               <tr>
-                <td>${rdfNode(env.createNamedNode(subj))}</td>
+                <td>${rdfNode(new NamedNode(subj))}</td>
                 ${predsList.map(cell)}
               </tr>
             `;
     };
 
     return html`
-          <div>[icon] ${rdfNode(env.createNamedNode(typeUri))} resources</div>
+          <div>[icon] ${rdfNode(new NamedNode(typeUri))} resources</div>
 <div class="typeBlockScroll">
           <table class="typeBlock">
             ${thead()}

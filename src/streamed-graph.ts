@@ -7,7 +7,7 @@ import { PolymerElement, html } from '@polymer/polymer';
 import { customElement, property, computed } from '@polymer/decorators';
 import { render } from 'lit-html';
 import { graphView } from './graph_view';
-import { Store, DataFactory } from "n3"
+import { N3Store } from "n3"
 
 import { StreamedGraphClient } from './streamed_graph_client';
 
@@ -17,7 +17,7 @@ class StreamedGraph extends PolymerElement {
     url: string = '';
 
     @property({ type: Object })
-    graph: {version: number, graph: Store};
+    graph: {version: number, graph: N3Store};
 
     @property({ type: Boolean })
     expanded: Boolean = false;
