@@ -12,7 +12,7 @@ const { rdf } = ns;
 function _emitQuad(
     onQuad: (q: Quad) => void,
     subjNode: NamedNode,
-    pred: string | { '@id': string },
+    pred: string,
     subj: any,
     graphNode: NamedNode) {
     let predNode: NamedNode;
@@ -20,7 +20,7 @@ function _emitQuad(
         predNode = namedNode(rdf.type);
     }
     else {
-        predNode = namedNode(pred['@id']);
+        predNode = namedNode(pred);
     }
     subj[pred as string].forEach(function (obj: any) {
         const objNode = (obj['@id'] ? namedNode(obj['@id']) :
@@ -41,12 +41,14 @@ export async function eachJsonLdQuad(jsonLdObj: object, onQuad: (q: Quad) => voi
             (expanded as [object]).forEach(function (g) {
                 var graph = g['@id'];
                 var graphNode = namedNode(graph);
-                g['@graph'].forEach(function (subj) {
+                g['@graph'].forEach(function (subj: { [predOrId: string]: any; }) {
+                    console.log('process subj', subj)
                     const subjNode = namedNode(subj['@id']);
                     for (let pred in subj) {
                         if (pred === '@id') {
                             continue;
-                        } 2
+                        }
+                        console.log('emit with', pred);
                         _emitQuad(onQuad, subjNode, pred, subj, graphNode);
                     }
                 });

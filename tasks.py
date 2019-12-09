@@ -7,7 +7,7 @@ def setup_npm(ctx):
 
 @task
 def serve_demo(ctx):
-    ctx.run('node_modules/webpack-serve/bin/webpack-serve --config webpack-dev.config.ts --port 8082')
+    ctx.run('node_modules/.bin/webpack-dev-server --config webpack-dev.config.ts  --port 8082')
 
 @task
 def build(ctx):
@@ -17,4 +17,5 @@ def build(ctx):
 
 @task
 def test(ctx):
-    ctx.run(f'node_modules/ts-node/dist/bin.js node_modules/jasmine/bin/jasmine --config=jasmine.json')
+    ctx.run(f'node_modules/.bin/webpack-cli --config webpack-test.config.ts')
+    ctx.run(f'node_modules/.bin/ts-node node_modules/.bin/jasmine --config=jasmine.json')

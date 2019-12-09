@@ -14,6 +14,6 @@ describe("eachJsonLdQuad", () => {
                 }],
             }
         ], results.push);
-        expect(results).toEqual('f')
+        expect(results).toEqual([]);
     });
 });

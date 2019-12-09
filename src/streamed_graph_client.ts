@@ -1,13 +1,8 @@
 // from /my/site/homepage/www/rdf/streamed-graph.js
 
-import * as async from "async";
-// import * as jsonld from "jsonld";
-
 import { eachJsonLdQuad } from "./json_ld_quads";
-import { Store } from "n3"
-
-// /// <reference types="eventsource" />
-// const EventSource = window.EventSource;
+import { N3Store } from '../node_modules/@types/n3/index';
+import { Store } from 'n3';
 
 export class StreamedGraphClient {
     // holds a n3 Store, which is synced to a server-side
@@ -15,7 +10,7 @@ export class StreamedGraphClient {
 
     onStatus: (msg: string) => void;
     onGraphChanged: () => void;
-    store: Store;
+    store: N3Store;
     events: EventSource;
     constructor(
         eventsUrl: string,
@@ -28,7 +23,7 @@ export class StreamedGraphClient {
         this.onGraphChanged = onGraphChanged;
         this.onStatus('startup...');
 
-        this.store = new Store({});
+        this.store = new Store();
 
         //     //             Object.keys(prefixes).forEach((prefix) => {
         //     //                 this.store.setPrefix(prefix, prefixes[prefix]);
@@ -74,49 +69,36 @@ export class StreamedGraphClient {
             }, 3000);
         });
 
-        this.events.addEventListener('fullGraph', (ev) => {
+        this.events.addEventListener('fullGraph', async (ev) => {
             this.onStatus('sync- full graph update');
-            let onReplaced = () => {
-                this.onStatus(`synced ${this.store.size}`);
-                this.onGraphChanged();
-            };
-            this.replaceFullGraph(ev.data, onReplaced);
+            await this.replaceFullGraph(ev.data);
+            this.onStatus(`synced ${this.store.size}`);
+            this.onGraphChanged();
         });
 
-        this.events.addEventListener('patch', (ev) => {
+        this.events.addEventListener('patch', async (ev) => {
             this.onStatus('sync- updating');
-            let onPatched = () => {
-                this.onStatus(`synced ${this.store.size}`);
-                this.onGraphChanged();
-            };
-            this.patchGraph(ev.data, onPatched);
+            await this.patchGraph(ev.data);
+            this.onStatus(`synced ${this.store.size}`);
+            this.onGraphChanged();
         });
         this.onStatus('connecting...');
     }
 
-    replaceFullGraph(jsonLdText: string, done: () => void) {
-        this.store = new Store({});
-        eachJsonLdQuad(JSON.parse(jsonLdText),
-            this.store.addQuad.bind(this.store),
-            done);
+    // these need some locks
+    async replaceFullGraph(jsonLdText: string) {
+        this.store = new Store();
+        await eachJsonLdQuad(JSON.parse(jsonLdText),
+            this.store.addQuad.bind(this.store));
     }
 
-    patchGraph(patchJson: string, done: () => void) {
+    async patchGraph(patchJson: string) {
         var patch = JSON.parse(patchJson).patch;
 
-        async.series([
-            (done) => {
-                eachJsonLdQuad(patch.deletes,
-                    this.store.removeQuad.bind(this.store), done);
-            },
-            (done) => {
-                eachJsonLdQuad(patch.adds,
-                    this.store.addQuad.bind(this.store), done);
-            },
-            /* seriesDone */ (done) => {
-                done();
-            }
-        ], done);
+        await eachJsonLdQuad(patch.deletes,
+            this.store.removeQuad.bind(this.store));
+        await eachJsonLdQuad(patch.adds,
+            this.store.addQuad.bind(this.store));
     }
 
     close() {
@@ -125,7 +107,7 @@ export class StreamedGraphClient {
         }
     }
 
-    testEventUrl(eventsUrl: string): Promise<void> {
+    async testEventUrl(eventsUrl: string): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             this.onStatus('testing connection');
             fetch(eventsUrl, {
