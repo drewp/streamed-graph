@@ -18,12 +18,9 @@ def build(ctx):
 @task
 def test(ctx):
     ctx.run(f'node_modules/.bin/webpack-cli --config webpack-test.config.ts')
-<<<<<<< working copy
     ctx.run(f'node_modules/.bin/ts-node node_modules/.bin/jasmine --config=jasmine.json')
 
 # one time:
 # yarn policies set-version v2
 # in vscode, ctrl-p then: ext install ark120202.vscode-typescript-pnp-plugin
 # or see https://next.yarnpkg.com/advanced/pnpify for a compatibility runner.
-=======
-    ctx.run(f'node_modules/.bin/ts-node node_modules/.bin/jasmine --config=jasmine.json')>>>>>>> merge rev
