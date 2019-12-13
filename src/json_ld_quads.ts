@@ -5,7 +5,7 @@ const { literal, quad, namedNode } = DataFactory;
 
 // import {} from 'n3';
 // const { rdf } = ns;
-const rdf = { type: "http://rdf/type/todo" };
+const rdf = { type: "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" };
 
 function _emitQuad(
     onQuad: (q: Quad) => void,

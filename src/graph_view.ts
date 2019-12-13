@@ -6,10 +6,11 @@ const { namedNode } = DataFactory;
 import { SuffixLabels } from './suffixLabels';
 // import ns from 'n3/src/IRIs';
 // const { rdf } = ns;
+const rdf = { type: "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" };
 
 type TypeToSubjs = Map<NamedNode, Set<NamedNode>>;
 function groupByRdfType(graph: N3Store): { byType: TypeToSubjs, untyped: Set<NamedNode> } {
-  const rdfType = namedNode('rdf:type');
+  const rdfType = namedNode(rdf.type);
   const byType: TypeToSubjs = new Map(); // type : subjs
   const untyped: Set<NamedNode> = new Set(); // subjs
   graph.forEach((q) => {

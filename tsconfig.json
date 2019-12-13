@@ -10,7 +10,7 @@
         "noImplicitReturns": true,
         "noImplicitThis": true,
         "outDir": "./build/js",
-        "strict": true,
+        // "strict": true,
         "strictFunctionTypes": true,
         "strictNullChecks": true,
         "strictPropertyInitialization": true,
@@ -18,10 +18,10 @@
         // "allowSyntheticDefaultImports": true,
         // "baseUrl": "./",
         // "emitDecoratorMetadata": true,
-        // "esModuleInterop": true,
+        "esModuleInterop": true,
         // "noUnusedLocals": true,
         // "noUnusedParameters": true,
-        // "rootDir": ".",
+         "rootDir": ".",
         // "types": [ "node", "jest" ],
     }
 }
