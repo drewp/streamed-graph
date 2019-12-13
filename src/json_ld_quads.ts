@@ -1,13 +1,11 @@
 import * as jsonld from "jsonld";
-import { Quad, NamedNode, Literal, N3Store } from 'n3';
-
-
-
-import { DataFactory } from 'n3';
+import { JsonLd, JsonLdArray } from 'jsonld/jsonld-spec';
+import { Quad, NamedNode, DataFactory } from 'n3';
 const { literal, quad, namedNode } = DataFactory;
 
-import ns from 'n3/src/IRIs';
-const { rdf } = ns;
+// import {} from 'n3';
+// const { rdf } = ns;
+const rdf = { type: "http://rdf/type/todo" };
 
 function _emitQuad(
     onQuad: (q: Quad) => void,
@@ -34,14 +32,14 @@ export async function eachJsonLdQuad(jsonLdObj: object, onQuad: (q: Quad) => voi
 
     return new Promise(function (resolve, reject) {
 
-        jsonld.expand(jsonLdObj, function onExpand(err, expanded) {
+        jsonld.expand(jsonLdObj, function onExpand(err, expanded: JsonLd) {
             if (err) {
                 reject(err);
             }
-            (expanded as [object]).forEach(function (g) {
-                var graph = g['@id'];
+            (expanded as JsonLdArray).forEach(function (g: JsonLd) {
+                var graph = (g as { '@id': string })['@id'];
                 var graphNode = namedNode(graph);
-                g['@graph'].forEach(function (subj: { [predOrId: string]: any; }) {
+                (g as { '@graph': JsonLdArray })['@graph'].forEach(function (subj: { [predOrId: string]: any; }) {
                     console.log('process subj', subj)
                     const subjNode = namedNode(subj['@id']);
                     for (let pred in subj) {

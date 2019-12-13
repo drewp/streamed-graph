@@ -1,13 +1,9 @@
-// from /my/site/homepage/www/rdf/browse/graphView.js
-
-//reference types="./n3.d.ts">
-
 import { html, TemplateResult } from 'lit-html';
-import { SuffixLabels } from './suffixLabels';
-
-import { Quad, Term, NamedNode, N3Store } from '../node_modules/@types/n3/index';
+import { Quad, Term, NamedNode, N3Store } from 'n3';
 import { DataFactory, Util } from 'n3';
 const { namedNode } = DataFactory;
+
+import { SuffixLabels } from './suffixLabels';
 // import ns from 'n3/src/IRIs';
 // const { rdf } = ns;
 
@@ -123,7 +119,7 @@ export class GraphView {
   }
 
   _predBlock(subj: NamedNode, pred: NamedNode) {
-    const objsSet = new Set();
+    const objsSet = new Set<Term>();
     this.graph.forEach((q: Quad) => {
       objsSet.add(q.object);
     }, subj, pred, null, null);

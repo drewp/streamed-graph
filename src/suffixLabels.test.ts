@@ -1,20 +1,20 @@
-//import {describe, test, expect} from 'jest';
-import { SuffixLabels } from './suffixLabels';
+// import {describe, test, expect} from 'jest';
+// import { SuffixLabels } from './suffixLabels';
 
-describe('_tailSegments', () => {
-  test("returns right amount", () => {
-    expect(SuffixLabels._tailSegments('http://foo/a/bb', 0)).equalTo('');
-    //   t.is(SuffixLabels._tailSegments('http://foo/a/bb', 1), 'bb');
-    //   t.is(SuffixLabels._tailSegments('http://foo/a/bb', 2), 'a/bb');
-    //   t.is(SuffixLabels._tailSegments('http://foo/a/bb', 3), 'foo/a/bb');
-    //   t.is(SuffixLabels._tailSegments('http://foo/a/bb', 4), '/foo/a/bb');
-    //   t.is(SuffixLabels._tailSegments('http://foo/a/bb', 5), 'http://foo/a/bb');
-  });
-  // test("_tailSegments ok with trailing slash", (t) => {
-  //   t.is(SuffixLabels._tailSegments('http://foo/', 0), '');
-  //   t.is(SuffixLabels._tailSegments('http://foo/', 1), '');
-  //   t.is(SuffixLabels._tailSegments('http://foo/', 2), 'foo/');
-});
+// describe('_tailSegments', () => {
+//   test("returns right amount", () => {
+//     expect(SuffixLabels._tailSegments('http://foo/a/bb', 0)).toEqual('');
+//     //   t.is(SuffixLabels._tailSegments('http://foo/a/bb', 1), 'bb');
+//     //   t.is(SuffixLabels._tailSegments('http://foo/a/bb', 2), 'a/bb');
+//     //   t.is(SuffixLabels._tailSegments('http://foo/a/bb', 3), 'foo/a/bb');
+//     //   t.is(SuffixLabels._tailSegments('http://foo/a/bb', 4), '/foo/a/bb');
+//     //   t.is(SuffixLabels._tailSegments('http://foo/a/bb', 5), 'http://foo/a/bb');
+//   });
+//   // test("_tailSegments ok with trailing slash", (t) => {
+//   //   t.is(SuffixLabels._tailSegments('http://foo/', 0), '');
+//   //   t.is(SuffixLabels._tailSegments('http://foo/', 1), '');
+//   //   t.is(SuffixLabels._tailSegments('http://foo/', 2), 'foo/');
+// });
 
 
 // describe("suffixLabels", () => {

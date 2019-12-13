@@ -1,7 +1,7 @@
 // from /my/site/homepage/www/rdf/streamed-graph.js
 
 import { eachJsonLdQuad } from "./json_ld_quads";
-import { N3Store } from '../node_modules/@types/n3/index';
+import { N3Store } from 'n3';
 import { Store } from 'n3';
 
 export class StreamedGraphClient {
@@ -11,7 +11,7 @@ export class StreamedGraphClient {
     onStatus: (msg: string) => void;
     onGraphChanged: () => void;
     store: N3Store;
-    events: EventSource;
+    events!: EventSource;
     constructor(
         eventsUrl: string,
         onGraphChanged: () => void,
@@ -71,14 +71,14 @@ export class StreamedGraphClient {
 
         this.events.addEventListener('fullGraph', async (ev) => {
             this.onStatus('sync- full graph update');
-            await this.replaceFullGraph(ev.data);
+            await this.replaceFullGraph((ev as MessageEvent).data);
             this.onStatus(`synced ${this.store.size}`);
             this.onGraphChanged();
         });
 
         this.events.addEventListener('patch', async (ev) => {
             this.onStatus('sync- updating');
-            await this.patchGraph(ev.data);
+            await this.patchGraph((ev as MessageEvent).data);
             this.onStatus(`synced ${this.store.size}`);
             this.onGraphChanged();
         });
