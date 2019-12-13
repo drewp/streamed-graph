@@ -50,6 +50,7 @@
   "scripts": {
     "compile": "tsc",
     "webpack-build": "webpack-cli --config webpack.config.js --mode production",
+    "webpack-build-forever": "webpack-cli --config webpack.config.js --mode production --watch",
     "test": "jest --env=node --colors --resolver=jest-pnp-resolver --coverage test"
   }
 }
