@@ -1,5 +1,6 @@
-const path = require("path");
-const webpack = require('webpack');
+import path from "path";
+import webpack from 'webpack';
+import { CheckerPlugin } from 'awesome-typescript-loader';
 
 const resolveConfig = {
     alias: {
@@ -12,7 +13,8 @@ const moduleConfig = {
     rules: [
         {
             test: /\.ts$/,
-            loader: 'ts-loader',
+            use: ['awesome-typescript-loader'],
+            exclude: /node_modules/
         },
         {
             test: /\.css$/i,
@@ -28,33 +30,21 @@ const moduleConfig = {
     ]
 };
 const pluginsConfig = [
+    new CheckerPlugin()
 ];
-module.exports = {
-    name: "dev",
+export default {
+    name: "test",
     mode: "development",
     entry: [
-        './src/streamed-graph.ts',
-        // './src/streamed-graph.css'   // doesn't emit anything
+        "./src/json_ld_quads_test.ts"
     ],
     output: {
-        filename: 'streamed-graph.bundle.js',
+        filename: "test.bundle.js",
         path: path.resolve(__dirname, 'build')
     },
+
     resolve: resolveConfig,
-    devtool: 'source-map',
     module: moduleConfig,
-    plugins: pluginsConfig,
-    devServer: {
-        port: 8082,
-        hot: false,
-        liveReload: true, // doesn't work
-        overlay: true,
-        watchContentBase: true
-    },
-    watch: true,
-    watchOptions: {
-        ignored: /node_modules/,
-        poll: 200
-    }
+    plugins: pluginsConfig
 };
 

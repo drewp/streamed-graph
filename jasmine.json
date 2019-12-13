@@ -1,5 +1,7 @@
 {
-    "spec_dir": "src",
-    "spec_files": ["**/*_test.ts"],
+    "spec_dir": "build",
+    "spec_files": [
+      "test.bundle.js"
+    ],
     "oneFailurePerSpec": false
   }
