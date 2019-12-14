@@ -30,29 +30,19 @@ function _emitQuad(
 
 export async function eachJsonLdQuad(jsonLdObj: object, onQuad: (q: Quad) => void) {
 
-    return new Promise(function (resolve, reject) {
+    const expanded = await jsonld.expand(jsonLdObj);
 
-        jsonld.expand(jsonLdObj, function onExpand(err, expanded: JsonLd) {
-            if (err) {
-                reject(err);
+    (expanded as JsonLdArray).forEach(function (g: JsonLd) {
+        var graph = (g as { '@id': string })['@id'];
+        var graphNode = namedNode(graph);
+        (g as { '@graph': JsonLdArray })['@graph'].forEach(function (subj: { [predOrId: string]: any; }) {
+            const subjNode = namedNode(subj['@id']);
+            for (let pred in subj) {
+                if (pred === '@id') {
+                    continue;
+                }
+                _emitQuad(onQuad, subjNode, pred, subj, graphNode);
             }
-            (expanded as JsonLdArray).forEach(function (g: JsonLd) {
-                var graph = (g as { '@id': string })['@id'];
-                var graphNode = namedNode(graph);
-                (g as { '@graph': JsonLdArray })['@graph'].forEach(function (subj: { [predOrId: string]: any; }) {
-                    console.log('process subj', subj)
-                    const subjNode = namedNode(subj['@id']);
-                    for (let pred in subj) {
-                        if (pred === '@id') {
-                            continue;
-                        }
-                        console.log('emit with', pred);
-                        _emitQuad(onQuad, subjNode, pred, subj, graphNode);
-                    }
-                });
-            });
-            resolve();
         });
     });
 }
-;
