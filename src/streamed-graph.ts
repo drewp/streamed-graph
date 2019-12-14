@@ -10,7 +10,7 @@ import { customElement, property, computed } from '@polymer/decorators';
 import { GraphView } from './graph_view';
 import { StreamedGraphClient } from './streamed_graph_client';
 
-interface VersionedGraph { version: number, store: N3Store|undefined };
+interface VersionedGraph { version: number, store: N3Store | undefined };
 
 @customElement('streamed-graph')
 class StreamedGraph extends PolymerElement {
@@ -23,8 +23,8 @@ class StreamedGraph extends PolymerElement {
     @property({ type: Boolean })
     expanded: boolean = false;
 
-    // @computed('expanded')
-    expandAction(): string {
+    @computed('expanded')
+    get expandAction() {
         return this.expanded ? '-' : '+';
     }
 
@@ -52,6 +52,9 @@ class StreamedGraph extends PolymerElement {
         this.graphView = (this.shadowRoot as ShadowRoot).getElementById("graphView") as Element;
 
         this._onUrl(this.url); // todo: watch for changes and rebuild
+        if (this.expanded) {
+            this.redrawGraph();
+        }
     }
 
     toggleExpand(ev: Event) {
@@ -92,7 +95,12 @@ class StreamedGraph extends PolymerElement {
 
     _redrawLater() {
         if (!this.graphViewDirty) return;
-        render(new GraphView(this.url, (this.graph as VersionedGraph).store as N3Store).makeTemplate(), this.graphView);
-        this.graphViewDirty = false;
+
+        if ((this.graph as VersionedGraph).store && this.graph.store) {
+            render(new GraphView(this.url, this.graph.store).makeTemplate(), this.graphView);
+            this.graphViewDirty = false;
+        } else {
+            render(html`<span>waiting for data...</span>`, this.graphView);
+        }
     }
 }
