@@ -11,7 +11,7 @@ def serve_demo(ctx):
 
 @task
 def build(ctx):
-    ctx.run(f'yarn run webpack-cli --config webpack.config.js --mode production')
+    ctx.run(f'yarn run webpack-cli --config webpack.config.js --mode production')  # --debug --display-error-details
     ctx.run(f'cp build/streamed-graph.bundle.js /my/site/homepage/www/rdf/streamed-graph.bundle.js')
     ctx.run(f'cp streamed-graph.css /my/site/homepage/www/rdf/streamed-graph.css')
 
