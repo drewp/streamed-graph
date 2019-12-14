@@ -6,7 +6,8 @@ module.exports = {
     entry: ['./src/streamed-graph.ts'],
     output: {
         filename: 'streamed-graph.bundle.js',
-        path: path.resolve(__dirname, 'build')
+        path: path.resolve(__dirname, 'build'),
+        publicPath: '/build/'
     },
     module: {
         rules: [
@@ -35,5 +36,10 @@ module.exports = {
     watchOptions: {
         ignored: /node_modules/,
         poll: 200
+    },
+    devServer: {
+        port: 8082,
+        publicPath: '/build/',
+        contentBase: __dirname
     }
 };

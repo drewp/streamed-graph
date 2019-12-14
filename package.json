@@ -50,7 +50,7 @@
     "compile": "tsc",
     "webpack-build": "webpack-cli --config webpack.config.js --mode production",
     "webpack-build-forever": "webpack-cli --config webpack.config.js --mode production --watch",
-    "webpack-dev-server": "webpack-dev-server --config webpack.config.js --mode development --port 8082 --watch ",
+    "webpack-dev-server": "webpack-dev-server --config webpack.config.js --mode development",
     "test": "jest --env=node --colors --resolver=jest-pnp-resolver --coverage test"
   }
 }
