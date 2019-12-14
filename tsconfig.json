@@ -23,5 +23,11 @@
         // "noUnusedParameters": true,
          "rootDir": ".",
         // "types": [ "node", "jest" ],
-    }
+    },
+    "include": [
+        "src/**/*.ts"
+    ],
+    "exclude": [
+        "src/**/*.test.ts"
+    ]
 }
