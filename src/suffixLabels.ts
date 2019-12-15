@@ -62,6 +62,7 @@ class SuffixLabels {
 
     }
 
+    // a substring to show for this uri
     getLabelForNode(node: string) {
         return this.displayNodes.get(node)!.label;
     }

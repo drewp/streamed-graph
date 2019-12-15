@@ -11,24 +11,36 @@ const rdf = { type: "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" };
 type TypeToSubjs = Map<NamedNode, Set<NamedNode>>;
 function groupByRdfType(graph: N3Store): { byType: TypeToSubjs, untyped: Set<NamedNode> } {
   const rdfType = namedNode(rdf.type);
-  const byType: TypeToSubjs = new Map(); // type : subjs
+  const byType: TypeToSubjs = new Map();
   const untyped: Set<NamedNode> = new Set(); // subjs
+  const internSubjs = new Map<string, NamedNode>();
   graph.forEach((q) => {
+    if (!Util.isNamedNode(q.subject)) {
+      throw new Error("unsupported " + q.subject.value);
+    }
+    const subj = q.subject as NamedNode;
+
     let subjType: NamedNode | null = null;
 
     graph.forObjects((o: Quad) => {
       if (Util.isNamedNode(o.object)) {
         subjType = o.object as NamedNode;
       }
-    }, q.subject, rdfType, null);
+    }, subj, rdfType, null);
 
     if (subjType !== null) {
+      // (subj, rdf:type, subjType) in graph
       if (!byType.has(subjType)) {
         byType.set(subjType, new Set());
       }
-      (byType.get(subjType) as Set<NamedNode>).add(q.subject as NamedNode);
+      (byType.get(subjType) as Set<NamedNode>).add(subj);
     } else {
-      untyped.add(q.subject as NamedNode);
+      // no rdf:type stmt in graph
+      if (!internSubjs.has(subj.value)) {
+        internSubjs.set(subj.value, subj);
+      }
+      const intSubj: NamedNode = internSubjs.get(subj.value as string) as NamedNode;
+      untyped.add(intSubj);
     }
   }, null, null, null, null);
   return { byType: byType, untyped: untyped };
@@ -52,18 +64,31 @@ class NodeDisplay {
       return html`<span class="literal">${n.value}${dtPart}</span>`;
     }
 
-    if (n.termType  == "NamedNode") {
-      let dn: string | undefined = this.labels.getLabelForNode(n.value);
-      if (dn === undefined) {
-        throw new Error(`dn=${dn}`);
+    if (n.termType == "NamedNode") {
+      let shortened = false;
+      let uriValue: string = n.value;
+      for (let [long, short] of [
+        ["http://www.w3.org/1999/02/22-rdf-syntax-ns#", "rdf:"],
+        ["http://www.w3.org/2000/01/rdf-schema#", "rdfs:"],
+        ["http://purl.org/dc/elements/1.1/", "dc:"],
+        ["http://www.w3.org/2001/XMLSchema#", "xsd:"]]) {
+        if (uriValue?.startsWith(long)) {
+          uriValue = short + uriValue.substr(long.length);
+          shortened = true;
+          break;
+        }
       }
-      if (dn!.match(/XMLSchema#.*/)) {
-        dn = dn!.replace('XMLSchema#', 'xsd:');
+      if (!shortened) {
+
+        let dn: string | undefined = this.labels.getLabelForNode(uriValue);
+        if (dn === undefined) {
+          throw new Error(`dn=${dn}`);
+        }
+        uriValue = dn;
       }
-      if (dn!.match(/rdf-schema#.*/)) {
-        dn = dn!.replace('rdf-schema#', 'rdfs:');
-      }
-      return html`<a class="graphUri" href="${n.value}">${dn}</a>`;
+
+
+      return html`<a class="graphUri" href="${n.value}">${uriValue}</a>`;
     }
 
     return html`[${n.termType} ${n.value}]`;
