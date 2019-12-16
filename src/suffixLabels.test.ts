@@ -1,71 +1,70 @@
-// import {describe, test, expect} from 'jest';
-// import { SuffixLabels } from './suffixLabels';
+import { SuffixLabels } from './suffixLabels';
 
-// describe('_tailSegments', () => {
-//   test("returns right amount", () => {
-//     expect(SuffixLabels._tailSegments('http://foo/a/bb', 0)).toEqual('');
-//     //   t.is(SuffixLabels._tailSegments('http://foo/a/bb', 1), 'bb');
-//     //   t.is(SuffixLabels._tailSegments('http://foo/a/bb', 2), 'a/bb');
-//     //   t.is(SuffixLabels._tailSegments('http://foo/a/bb', 3), 'foo/a/bb');
-//     //   t.is(SuffixLabels._tailSegments('http://foo/a/bb', 4), '/foo/a/bb');
-//     //   t.is(SuffixLabels._tailSegments('http://foo/a/bb', 5), 'http://foo/a/bb');
-//   });
-//   // test("_tailSegments ok with trailing slash", (t) => {
-//   //   t.is(SuffixLabels._tailSegments('http://foo/', 0), '');
-//   //   t.is(SuffixLabels._tailSegments('http://foo/', 1), '');
-//   //   t.is(SuffixLabels._tailSegments('http://foo/', 2), 'foo/');
-// });
+describe('_tailSegments', () => {
+  it("returns right amount", () => {
+    expect(SuffixLabels._tailSegments('http://foo/a/bb', 0)).toEqual('');
+    expect(SuffixLabels._tailSegments('http://foo/a/bb', 1)).toEqual('bb');
+    expect(SuffixLabels._tailSegments('http://foo/a/bb', 2)).toEqual('a/bb');
+    expect(SuffixLabels._tailSegments('http://foo/a/bb', 3)).toEqual('foo/a/bb');
+    expect(SuffixLabels._tailSegments('http://foo/a/bb', 4)).toEqual('/foo/a/bb');
+    expect(SuffixLabels._tailSegments('http://foo/a/bb', 5)).toEqual('http://foo/a/bb');
+  });
+  it("_tailSegments ok with trailing slash", () => {
+    expect(SuffixLabels._tailSegments('http://foo/', 0)).toEqual('');
+    expect(SuffixLabels._tailSegments('http://foo/', 1)).toEqual('');
+    expect(SuffixLabels._tailSegments('http://foo/', 2)).toEqual('foo/');
+  });
+});
 
+describe("suffixLabels", () => {
+  const fakeNode = (uri: string) => { return { nominalValue: uri } };
 
-// describe("suffixLabels", () => {
-//   const fakeNode = (uri: string) => { return { nominalValue: uri } };
+  it("returns whole url segments", () => {
+    const suf = new SuffixLabels();
+    suf._planDisplayForUri('http://a/b/c/dd');
+    suf._planDisplayForUri('http://a/b/c/ee');
 
-//   it("returns whole url segments", () => {
-//     const suf = new SuffixLabels();
-//     suf._planDisplayForUri('http://a/b/c/dd');
-//     suf._planDisplayForUri('http://a/b/c/ee');
+    expect(suf.getLabelForNode('http://a/b/c/dd')).toEqual('dd');
+    expect(suf.getLabelForNode('http://a/b/c/ee')).toEqual('ee');
+  });
 
-//     t.is(suf.getLabelForNode('http://a/b/c/dd'), 'dd');
-//     t.is(suf.getLabelForNode('http://a/b/c/ee'), 'ee');
-//   });
+  it("doesn't treat a repeated uri as a name clash", () => {
+    const suf = new SuffixLabels();
+    suf._planDisplayForUri('http://a/b/c');
+    suf._planDisplayForUri('http://a/b/c');
 
-//   it("doesn't treat a repeated uri as a name clash", () => {
-//     const suf = new SuffixLabels();
-//     suf._planDisplayForUri('http://a/b/c');
-//     suf._planDisplayForUri('http://a/b/c');
+    expect(suf.getLabelForNode('http://a/b/c')).toEqual('c');
+  });
 
-//     t.is(suf.getLabelForNode('http://a/b/c'), 'c');
-//   });
+  it("moves to two segments when needed", () => {
+    const suf = new SuffixLabels();
+    suf._planDisplayForUri('http://a/b/c/d');
+    suf._planDisplayForUri('http://a/b/f/d');
 
-//   it("moves to two segments when needed", () => {
-//     const suf = new SuffixLabels();
-//     suf._planDisplayForUri('http://a/b/c/d');
-//     suf._planDisplayForUri('http://a/b/f/d');
+    expect(suf.getLabelForNode('http://a/b/c/d')).toEqual('c/d');
+    expect(suf.getLabelForNode('http://a/b/f/d')).toEqual('f/d');
+  });
 
-//     t.is(suf.getLabelForNode('http://a/b/c/d'), 'c/d');
-//     t.is(suf.getLabelForNode('http://a/b/f/d'), 'f/d');
-//   });
+  it("is ok with clashes at different segment positions", () => {
+    const suf = new SuffixLabels();
+    suf._planDisplayForUri('http://z/z/z/a/b/c');
+    suf._planDisplayForUri('http://a/b/c');
 
-//   it("is ok with clashes at different segment positions", () => {
-//     const suf = new SuffixLabels();
-//     suf._planDisplayForUri('http://z/z/z/a/b/c');
-//     suf._planDisplayForUri('http://a/b/c');
+    expect(suf.getLabelForNode('http://z/z/z/a/b/c')).toEqual('z/a/b/c');
+    expect(suf.getLabelForNode('http://a/b/c')).toEqual('/a/b/c');
+  });
 
-//     t.is(suf.getLabelForNode('http://z/z/z/a/b/c'), 'z/a/b/c');
-//     t.is(suf.getLabelForNode('http://a/b/c'), '/a/b/c');
-//   });
+  it("uses appropriately long suffixes per uri", () => {
+    const suf = new SuffixLabels();
+    suf._planDisplayForUri('http://a/b/c/d/e');
+    suf._planDisplayForUri('http://a/b/f/d/e');
+    suf._planDisplayForUri('http://a/b/c/g');
+    suf._planDisplayForUri('http://a/z');
 
-//   it("uses appropriately long suffixes per uri", () => {
-//     const suf = new SuffixLabels();
-//     suf._planDisplayForUri('http://a/b/c/d/e');
-//     suf._planDisplayForUri('http://a/b/f/d/e');
-//     suf._planDisplayForUri('http://a/b/c/g');
-//     suf._planDisplayForUri('http://a/z');
+    expect(suf.getLabelForNode('http://a/b/c/d/e')).toEqual('c/d/e');
+    expect(suf.getLabelForNode('http://a/b/f/d/e')).toEqual('f/d/e');
+    expect(suf.getLabelForNode('http://a/b/c/g')).toEqual('g');
+    expect(suf.getLabelForNode('http://a/z')).toEqual('z');
+  });
 
-//     t.is(suf.getLabelForNode('http://a/b/c/d/e'), 'c/d/e');
-//     t.is(suf.getLabelForNode('http://a/b/f/d/e'), 'f/d/e');
-//     t.is(suf.getLabelForNode('http://a/b/c/g'), 'g');
-//     t.is(suf.getLabelForNode('http://a/z'), 'z');
-//   });
-
-// });
+});

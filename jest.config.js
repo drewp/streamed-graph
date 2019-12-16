@@ -9,6 +9,8 @@ module.exports = {
   globals: {
     'ts-jest': {
       packageJson: 'package.json',
+      babelConfig: true
     }
-  }
+  },
+  resolver: require.resolve(`jest-pnp-resolver`)
 };

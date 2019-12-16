@@ -22,13 +22,10 @@
         // "noUnusedLocals": true,
         // "noUnusedParameters": true,
          "rootDir": ".",
-        // "types": [ "node", "jest" ],
+        "types": ["jest"],
         "sourceMap": true
     },
     "include": [
         "src/**/*.ts"
-    ],
-    "exclude": [
-        "src/**/*.test.ts"
     ]
 }

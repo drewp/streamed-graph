@@ -7,18 +7,29 @@ def setup_npm(ctx):
 
 @task
 def serve_demo(ctx):
-    ctx.run('yarn webpack-dev-server --config webpack-dev.config.ts  --port 8082')
+    ctx.run('yarn webpack-dev-server')
 
 @task
 def build(ctx):
-    ctx.run(f'yarn run webpack-cli --config webpack.config.js --mode production')  # --debug --display-error-details
+    ctx.run(f'yarn run webpack-build')  # --debug --display-error-details
     ctx.run(f'cp build/streamed-graph.bundle.js /my/site/homepage/www/rdf/streamed-graph.bundle.js')
-    ctx.run(f'cp streamed-graph.css /my/site/homepage/www/rdf/streamed-graph.css')
+    ctx.run(f'cp src/streamed-graph.css         /my/site/homepage/www/rdf/streamed-graph.css')
+
+@task
+def build_forever(ctx):
+    ctx.run(f'yarn run webpack-build-forever')
+
+@task
+def dev_server(ctx):
+    ctx.run(f'yarn webpack-dev-server')
 
 @task
 def test(ctx):
-    ctx.run(f'node_modules/.bin/webpack-cli --config webpack-test.config.ts')
-    ctx.run(f'node_modules/.bin/ts-node node_modules/.bin/jasmine --config=jasmine.json')
+    ctx.run(f'yarn test', pty=True)
+
+@task
+def test_forever(ctx):
+    ctx.run(f'yarn test-forever', pty=True)
 
 # one time per machine:
 # yarn policies set-version v2
