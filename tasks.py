@@ -11,17 +11,17 @@ def serve_demo(ctx):
 
 @task
 def build(ctx):
-    ctx.run(f'yarn run webpack-build')  # --debug --display-error-details
+    ctx.run(f'yarn run webpack-build', pty=True)  # --debug --display-error-details
     ctx.run(f'cp build/streamed-graph.bundle.js /my/site/homepage/www/rdf/streamed-graph.bundle.js')
     ctx.run(f'cp src/streamed-graph.css         /my/site/homepage/www/rdf/streamed-graph.css')
 
 @task
 def build_forever(ctx):
-    ctx.run(f'yarn run webpack-build-forever')
+    ctx.run(f'yarn run webpack-build-forever', pty=True)
 
 @task
 def dev_server(ctx):
-    ctx.run(f'yarn webpack-dev-server')
+    ctx.run(f'yarn webpack-dev-server', pty=True)
 
 @task
 def test(ctx):

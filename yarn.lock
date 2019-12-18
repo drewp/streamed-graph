@@ -1042,7 +1042,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"acorn-walk@npm:^6.0.1":
+"acorn-walk@npm:^6.0.1, acorn-walk@npm:^6.1.1":
   version: 6.2.0
   resolution: "acorn-walk@npm:6.2.0"
   checksum: 311ffb5f733a7925fd1838ddda1c2e63987766aa482ff4bd91d45f709395d5ba46f6594868f480d298f1365e67274b342af761affd13bfa4a959bdc38407f0de
@@ -1058,7 +1058,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"acorn@npm:^6.0.1, acorn@npm:^6.2.1":
+"acorn@npm:^6.0.1, acorn@npm:^6.0.7, acorn@npm:^6.2.1":
   version: 6.4.0
   resolution: "acorn@npm:6.4.0"
   bin:
@@ -1455,6 +1455,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"bfj@npm:^6.1.1":
+  version: 6.1.2
+  resolution: "bfj@npm:6.1.2"
+  dependencies:
+    bluebird: ^3.5.5
+    check-types: ^8.0.3
+    hoopy: ^0.1.4
+    tryer: ^1.0.1
+  checksum: 0c79c442b3bc57288a7126dcd1691de6ca9a98ee8ec81a637886068920a6f58c0a90e9471274c907ef1c35a10872bf23755c8c2c80820c067613ecbb1bdc8db3
+  languageName: node
+  linkType: hard
+
 "big.js@npm:^5.2.2":
   version: 5.2.2
   resolution: "big.js@npm:5.2.2"
@@ -1822,6 +1834,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"check-types@npm:^8.0.3":
+  version: 8.0.3
+  resolution: "check-types@npm:8.0.3"
+  checksum: ce76a54f8e836877fbf5acad275fb981458d12a0982ecd12c2cec6afa43e5399a6343bce60a1ccd768175cf885c6d96e78e3da3763a59c3488f93722239da859
+  languageName: node
+  linkType: hard
+
 "chokidar@npm:^2.0.2, chokidar@npm:^2.1.8":
   version: 2.1.8
   resolution: "chokidar@npm:2.1.8"
@@ -1961,7 +1980,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:^2.20.0, commander@npm:~2.20.3":
+"commander@npm:^2.18.0, commander@npm:^2.20.0, commander@npm:~2.20.3":
   version: 2.20.3
   resolution: "commander@npm:2.20.3"
   checksum: eae98d97c0a3a59096be01418e7d882978bbc0c9b8921db75e9907a738dd764ecca833950a883fa1a81d9149e7492bc65af0adaef17f5b112558c176089062bd
@@ -2583,6 +2602,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"duplexer@npm:^0.1.1":
+  version: 0.1.1
+  resolution: "duplexer@npm:0.1.1"
+  checksum: 12fedc287117b2a6f1ac1c0b94c9f98b40300a6e7c69be1b63b544c00798a0eea56c3cb7ba56c4e7f08cd4cfedc328b04a381a74a866e859c47ef9a12b2b153d
+  languageName: node
+  linkType: hard
+
 "duplexify@npm:^3.4.2, duplexify@npm:^3.6.0":
   version: 3.7.1
   resolution: "duplexify@npm:3.7.1"
@@ -2609,6 +2635,13 @@ __metadata:
   version: 1.1.1
   resolution: "ee-first@npm:1.1.1"
   checksum: ea8cace46f8e217451f3ec571b2fac3b12cc0361a4ce82342df8b0fcff60501da08214af0f249e3c6792f0a375091d4a565ea7b84705e3c1f51fc65113240f6a
+  languageName: node
+  linkType: hard
+
+"ejs@npm:^2.6.1":
+  version: 2.7.4
+  resolution: "ejs@npm:2.7.4"
+  checksum: b988ed7ad8b674e5e7a4174ed2b040e87a932a46e6c878575271e068c922ca41cae8b3fc9298df73fad895cb088dc8394a116498c5a943023b43dbf0cfe6a5a4
   languageName: node
   linkType: hard
 
@@ -2968,7 +3001,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express@npm:^4.17.1":
+"express@npm:^4.16.3, express@npm:^4.17.1":
   version: 4.17.1
   resolution: "express@npm:4.17.1"
   dependencies:
@@ -3129,6 +3162,13 @@ __metadata:
   version: 3.5.1
   resolution: "figgy-pudding@npm:3.5.1"
   checksum: ee3c543d6ab827cbb4cb9e02ee5871b265ba38bbeeb9db1c33b6472e6c552441d2cb16ad9c3d6fa3538a849bd735d54dccae257829b31d2b54e1e469ecbfd244
+  languageName: node
+  linkType: hard
+
+"filesize@npm:^3.6.1":
+  version: 3.6.1
+  resolution: "filesize@npm:3.6.1"
+  checksum: fc3f87a74fe0f667deacb607e947ee8309408bfc20cdc684ac52811b28c3c782ea03ca9b6d6a7bd47f624d9cd0ab4fa75101a33e56d66545eb73e93f8d4a9716
   languageName: node
   linkType: hard
 
@@ -3539,6 +3579,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"gzip-size@npm:^5.0.0":
+  version: 5.1.1
+  resolution: "gzip-size@npm:5.1.1"
+  dependencies:
+    duplexer: ^0.1.1
+    pify: ^4.0.1
+  checksum: 443644e5af454be78d947b19bb15a9699f8055e143c4b63c62c812d8c1dc21f6883714523fa8768983eb127c6057e632ea6c21ce6a7cd1ab417ccc925d5280a8
+  languageName: node
+  linkType: hard
+
 "handle-thing@npm:^2.0.0":
   version: 2.0.0
   resolution: "handle-thing@npm:2.0.0"
@@ -3693,6 +3743,13 @@ __metadata:
   dependencies:
     parse-passwd: ^1.0.0
   checksum: 6e977c468fc316ca4272dd75702afd275b5c60b467052a266d03942ad353509677a034eb40397c1d53068d07b3aa0cb3a4695ccfbf4d24cdc4c31a53786181dd
+  languageName: node
+  linkType: hard
+
+"hoopy@npm:^0.1.4":
+  version: 0.1.4
+  resolution: "hoopy@npm:0.1.4"
+  checksum: 608971985088172c580771ff70e32664bae81ef99bde1dfd86b4019eebf12356070156008201ed1ed9b6cbf53fed9c3098f1c0e65daaf8185714cec03d0df678
   languageName: node
   linkType: hard
 
@@ -6210,6 +6267,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"opener@npm:^1.5.1":
+  version: 1.5.1
+  resolution: "opener@npm:1.5.1"
+  bin:
+    opener: bin/opener-bin.js
+  checksum: 730a4caf7f780ffc634c7596f305358cacb772b2ed6757b1318c19ad2a26f9064f5a161a3709891dd450f46df84fb96f093a663a26da70f1e6775da230c4f1aa
+  languageName: node
+  linkType: hard
+
 "opn@npm:^5.5.0":
   version: 5.5.0
   resolution: "opn@npm:5.5.0"
@@ -7960,6 +8026,7 @@ __metadata:
     ts-loader: ^6.2.1
     typescript: ^3.7.3
     webpack: ^4.41.2
+    webpack-bundle-analyzer: ^3.6.0
     webpack-cli: ^3.3.10
     webpack-dev-server: ^3.9.0
     webpack-serve: ^3.2.0
@@ -8346,6 +8413,13 @@ __metadata:
   dependencies:
     punycode: ^2.1.0
   checksum: 2790d3e6251ccc357242d2034214eb02c103794a6f3f570d6baae9debf1858de1604aeb55049c4bb178cc1a2aba501d2ae0970ea8503cd25612dd346bcfc9dd5
+  languageName: node
+  linkType: hard
+
+"tryer@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "tryer@npm:1.0.1"
+  checksum: b87235d6ebf8c8ac88a6089570db4aa76a73516d81dc6c146536dcc6a354178420106fe8de21c0da8a75902feaa72d023a752e1a9cda5af421bfec7bea8446dd
   languageName: node
   linkType: hard
 
@@ -8746,6 +8820,29 @@ __metadata:
   languageName: node
   linkType: hard
 
+"webpack-bundle-analyzer@npm:^3.6.0":
+  version: 3.6.0
+  resolution: "webpack-bundle-analyzer@npm:3.6.0"
+  dependencies:
+    acorn: ^6.0.7
+    acorn-walk: ^6.1.1
+    bfj: ^6.1.1
+    chalk: ^2.4.1
+    commander: ^2.18.0
+    ejs: ^2.6.1
+    express: ^4.16.3
+    filesize: ^3.6.1
+    gzip-size: ^5.0.0
+    lodash: ^4.17.15
+    mkdirp: ^0.5.1
+    opener: ^1.5.1
+    ws: ^6.0.0
+  bin:
+    webpack-bundle-analyzer: lib/bin/analyzer.js
+  checksum: 702e5f86a4a22fc3bb8d1aba249af3e1a1543cad4be489ad43f82b7d5d0bf572ada05992a1f53fbee167c4ca1f7b68385cd5a4ab49854457124a39bb9f24a861
+  languageName: node
+  linkType: hard
+
 "webpack-cli@npm:^3.3.10":
   version: 3.3.10
   resolution: "webpack-cli@npm:3.3.10"
@@ -9116,7 +9213,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ws@npm:^6.2.1":
+"ws@npm:^6.0.0, ws@npm:^6.2.1":
   version: 6.2.1
   resolution: "ws@npm:6.2.1"
   dependencies:

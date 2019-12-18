@@ -9,6 +9,7 @@ import { customElement, property, computed } from '@polymer/decorators';
 
 import { GraphView } from './graph_view';
 import { StreamedGraphClient } from './streamed_graph_client';
+export { StreamedGraphClient } from './streamed_graph_client';
 
 interface VersionedGraph { version: number, store: N3Store | undefined };
 
@@ -57,7 +58,7 @@ class StreamedGraph extends PolymerElement {
         }
     }
 
-    toggleExpand(ev: Event) {
+    toggleExpand() {
         this.expanded = !this.expanded;
         if (this.expanded) {
             this.redrawGraph()

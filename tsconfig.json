@@ -3,29 +3,28 @@
         "alwaysStrict": true,
         "declaration": true,
         "experimentalDecorators": true,
-        "lib": [ "es6", "dom" ],
+        "lib": [
+            "es6",
+            "dom"
+        ],
         "module": "commonjs",
         "noFallthroughCasesInSwitch": true,
         "noImplicitAny": true,
         "noImplicitReturns": true,
         "noImplicitThis": true,
-        "outDir": "./build/js",
-        // "strict": true,
+        "declarationDir": "./build",
+        "outDir": "./build/outDir_seems_unused",
+        "strict": true,
         "strictFunctionTypes": true,
         "strictNullChecks": true,
         "strictPropertyInitialization": true,
         "target": "es6",
-        // "allowSyntheticDefaultImports": true,
-        // "baseUrl": "./",
-        // "emitDecoratorMetadata": true,
         "esModuleInterop": true,
-        // "noUnusedLocals": true,
-        // "noUnusedParameters": true,
-         "rootDir": ".",
-        "types": ["jest"],
-        "sourceMap": true
-    },
-    "include": [
-        "src/**/*.ts"
-    ]
+        "types": [
+            "jest"
+        ],
+        "sourceMap": true,
+        "baseUrl": "src",
+        
+    }
 }

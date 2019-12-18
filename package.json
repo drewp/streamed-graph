@@ -1,5 +1,6 @@
 {
   "name": "streamed-graph",
+  "version": "0.2",
   "notinstalled": {
     "@babel/preset-env": "^7.7.6",
     "@babel/preset-typescript": "^7.7.4",
@@ -10,10 +11,21 @@
     "file-loader": "^5.0.2",
     "ts-node": "^8.5.4"
   },
+  "module": "streamed-graph",
+  "main": "streamed-graph",
+  "types": "./build/streamed-graph.d.ts",
+  "files": [
+    "./build/streamed-graph.bindle.js"
+  ],
   "dependencies": {
-    "@babel/core": "^7.7.5",
     "@polymer/decorators": "^3.0.0",
     "@polymer/polymer": "^3.3.1",
+    "jsonld": "^2.0.1",
+    "lit-html": "^1.1.2",
+    "n3": "^1.3.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.5",
     "@types/jest": "^24.0.23",
     "@types/jsonld": "^1.5.0",
     "@types/n3": "^1.1.1",
@@ -26,14 +38,12 @@
     "jest-cli": "^24.9.0",
     "jest-pnp-resolver": "^1.2.1",
     "jest-webpack": "^0.5.1",
-    "jsonld": "^2.0.1",
-    "lit-html": "^1.1.2",
-    "n3": "^1.3.4",
     "pnp-webpack-plugin": "^1.5.0",
     "ts-jest": "24.2.0",
     "ts-loader": "^6.2.1",
     "typescript": "^3.7.3",
-    "webpack": "^4.41.2",
+    "webpack": "^4.41.3",
+    "webpack-bundle-analyzer": "^3.6.0",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.9.0",
     "webpack-serve": "^3.2.0"

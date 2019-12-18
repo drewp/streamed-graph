@@ -52,7 +52,7 @@ module.exports = [
                 apply: (compiler) => {
                     compiler.hooks.afterEmit.tap('AfterEmitPlugin', (compilation) => {
                         jest.run([
-                            '--detectOpenHandles', // not just to debug; having this quiets a jest error.
+                            '--detectOpenHandles', // not just to debug; having this quiets a jest error
                             '--testRegex', 'test.bundle.js', 'build/test.bundle.js']);
                     });
                 }
@@ -60,3 +60,4 @@ module.exports = [
         ]
     }, base)
 ];
+
