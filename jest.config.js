@@ -1,16 +1,6 @@
 module.exports = {
-  transform: {
-    "^.+\\.tsx?$": "ts-jest"
-  },
-  testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-  testPathIgnorePatterns: ["/lib/", "/node_modules/"],
-  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
-  collectCoverage: true,
-  globals: {
-    'ts-jest': {
-      packageJson: 'package.json',
-      babelConfig: true
-    }
-  },
-  resolver: require.resolve(`jest-pnp-resolver`)
+  roots: ["<rootDir>/src"],
+  preset: "ts-jest",
+  testEnvironment: "node",
+  collectCoverage: true
 };
