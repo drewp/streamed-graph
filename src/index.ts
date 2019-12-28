@@ -1,107 +1,123 @@
-
 // these are just for timebank- move them out
-import '@polymer/polymer/lib/elements/dom-bind.js';
+import "@polymer/polymer/lib/elements/dom-bind.js";
 
-import { PolymerElement, html } from '@polymer/polymer';
-import { render } from 'lit-html';
-import { N3Store } from "n3"
-import { customElement, property, computed } from '@polymer/decorators';
+import { PolymerElement, html } from "@polymer/polymer";
+import { render } from "lit-html";
+import { N3Store } from "n3";
+import { customElement, property, computed } from "@polymer/decorators";
 
-import { GraphView } from './graph_view';
-import { StreamedGraphClient } from './streamed_graph_client';
-export { StreamedGraphClient } from './streamed_graph_client';
+import { GraphView } from "./graph_view";
+import { StreamedGraphClient } from "./streamed_graph_client";
+export { StreamedGraphClient } from "./streamed_graph_client";
 
-interface VersionedGraph { version: number, store: N3Store | undefined };
+interface VersionedGraph {
+  version: number;
+  store: N3Store | undefined;
+}
 
-@customElement('streamed-graph')
+@customElement("streamed-graph")
 class StreamedGraph extends PolymerElement {
-    @property({ type: String })
-    url: string = '';
+  @property({ type: String })
+  url: string = "";
 
-    @property({ type: Object })
-    graph!: VersionedGraph;
+  @property({ type: Object })
+  graph!: VersionedGraph;
 
-    @property({ type: Boolean })
-    expanded: boolean = false;
+  @property({ type: Boolean })
+  expanded: boolean = false;
 
-    @computed('expanded')
-    get expandAction() {
-        return this.expanded ? '-' : '+';
+  @computed("expanded")
+  get expandAction() {
+    return this.expanded ? "-" : "+";
+  }
+
+  @property({ type: String })
+  status: string = "";
+
+  sg!: StreamedGraphClient;
+  graphView!: Element;
+  graphViewDirty = true;
+
+  static get template() {
+    return html`
+      <link rel="stylesheet" href="../src/streamed-graph.css" />
+      <div id="ui">
+        <span class="expander"
+          ><button on-click="toggleExpand">{{expandAction}}</button></span
+        >
+        StreamedGraph <a href="{{url}}">[source]</a>: {{status}}
+      </div>
+      <div id="graphView"></div>
+    `;
+  }
+
+  ready() {
+    super.ready();
+    this.graph = { version: -1, store: undefined };
+    this.graphView = (this.shadowRoot as ShadowRoot).getElementById(
+      "graphView"
+    ) as Element;
+
+    this._onUrl(this.url); // todo: watch for changes and rebuild
+    if (this.expanded) {
+      this.redrawGraph();
     }
+  }
 
-    @property({ type: String })
-    status: string = '';
-
-    sg!: StreamedGraphClient;
-    graphView!: Element;
-    graphViewDirty = true;
-
-    static get template() {
-        return html`
-            <link rel="stylesheet" href="../src/streamed-graph.css">
-            <div id="ui">
-                <span class="expander"><button on-click="toggleExpand">{{expandAction}}</button></span>
-                StreamedGraph <a href="{{url}}">[source]</a>:
-                {{status}}
-            </div>
-            <div id="graphView"></div>`;
+  toggleExpand() {
+    this.expanded = !this.expanded;
+    if (this.expanded) {
+      this.redrawGraph();
+    } else {
+      this.graphViewDirty = false;
+      render(null, this.graphView);
     }
+  }
 
-    ready() {
-        super.ready();
-        this.graph = { version: -1, store: undefined };
-        this.graphView = (this.shadowRoot as ShadowRoot).getElementById("graphView") as Element;
+  redrawGraph() {
+    this.graphViewDirty = true;
+    requestAnimationFrame(this._redrawLater.bind(this));
+  }
 
-        this._onUrl(this.url); // todo: watch for changes and rebuild
-        if (this.expanded) {
-            this.redrawGraph();
-        }
+  _onUrl(url: string) {
+    if (this.sg) {
+      this.sg.close();
     }
+    this.sg = new StreamedGraphClient(
+      url,
+      this.onGraphChanged.bind(this),
+      this.set.bind(this, "status"),
+      [], //window.NS,
+      []
+    );
+  }
 
-    toggleExpand() {
-        this.expanded = !this.expanded;
-        if (this.expanded) {
-            this.redrawGraph()
-        } else {
-            this.graphViewDirty = false;
-            render(null, this.graphView);
-        }
+  onGraphChanged() {
+    this.graph = {
+      version: this.graph.version + 1,
+      store: this.sg.store
+    };
+    if (this.expanded) {
+      this.redrawGraph();
     }
+  }
 
-    redrawGraph() {
-        this.graphViewDirty = true;
-        requestAnimationFrame(this._redrawLater.bind(this));
+  _redrawLater() {
+    if (!this.graphViewDirty) return;
+
+    if ((this.graph as VersionedGraph).store && this.graph.store) {
+      render(
+        new GraphView(this.url, this.graph.store).makeTemplate(),
+        this.graphView
+      );
+      this.graphViewDirty = false;
+    } else {
+      render(
+        html`
+          <span>waiting for data...</span>
+        `,
+        this.graphView
+      );
     }
-
-    _onUrl(url: string) {
-        if (this.sg) { this.sg.close(); }
-        this.sg = new StreamedGraphClient(
-            url,
-            this.onGraphChanged.bind(this),
-            this.set.bind(this, 'status'),
-            [],//window.NS,
-            []
-        );
-    }
-
-    onGraphChanged() {
-        this.graph = {
-            version: this.graph.version + 1,
-            store: this.sg.store
-        };
-        if (this.expanded) {
-            this.redrawGraph();
-        }
-    }
-
-    _redrawLater() {
-        if (!this.graphViewDirty) return;
-
-        if ((this.graph as VersionedGraph).store && this.graph.store) {
-            render(new GraphView(this.url, this.graph.store).makeTemplate(), this.graphView);
-            this.graphViewDirty = false;
-        } else {
-            render(html`<span>waiting for data...</span>`, this.graphView);
-        }
-    }
+  }
 }
