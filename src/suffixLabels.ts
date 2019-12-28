@@ -59,7 +59,6 @@ class SuffixLabels {
         clashNode.label = nextLeftSeg[0] + '/' + clashNode.label;
         nextLeftSeg[1].usedBy = curs.usedBy;
         curs.usedBy = undefined;
-
     }
 
     // a substring to show for this uri

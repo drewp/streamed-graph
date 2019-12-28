@@ -7,21 +7,15 @@ def setup_npm(ctx):
 
 @task
 def serve_demo(ctx):
-    ctx.run('npm run webpack-dev-server')
+    ctx.run('webfsd -Fp 8021')
 
 @task
 def build(ctx):
-    ctx.run(f'npm run webpack-build', pty=True)
-    ctx.run(f'cp build/bundle.js         /my/site/homepage/www/rdf/streamed-graph.bundle.js')
-    ctx.run(f'cp src/streamed-graph.css  /my/site/homepage/www/rdf/streamed-graph.css')
+    ctx.run(f'npm run build', pty=True)
 
 @task
 def build_forever(ctx):
-    ctx.run(f'npm run run webpack-build-forever', pty=True)
-
-@task
-def dev_server(ctx):
-    ctx.run(f'npm run webpack-dev-server', pty=True)
+    ctx.run(f'npm run build_forever', pty=True)
 
 @task
 def test(ctx):
@@ -29,4 +23,9 @@ def test(ctx):
 
 @task
 def test_forever(ctx):
-    ctx.run(f'npm run test-forever', pty=True)
+    ctx.run(f'npm run test_forever', pty=True)
+
+@task(pre=[build])
+def install(ctx):
+    ctx.run(f'cp build/bundle.js         /my/site/homepage/www/rdf/streamed-graph.bundle.js')
+    ctx.run(f'cp src/streamed-graph.css  /my/site/homepage/www/rdf/streamed-graph.css')

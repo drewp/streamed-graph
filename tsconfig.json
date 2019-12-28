@@ -1,18 +1,15 @@
 {
   "compilerOptions": {
-    // "strict": true,
+    "strict": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
-    // "noUnusedParameters": true,
-    // "noUnusedLocals": true,
     "strictFunctionTypes": true,
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "alwaysStrict": true,
 
-    // "allowSyntheticDefaultImports": true,
     "types": ["jest"],
     
     "module": "ES6",
@@ -22,12 +19,13 @@
     "declaration": true,
     "experimentalDecorators": true,
     "allowJs": true,
+    "esModuleInterop": true,
+    // "allowSyntheticDefaultImports": true,
     // "rootDir": ".",
     // "outDir": "./build",
-    "esModuleInterop": true,
+    // "baseUrl": "./build"
     // "emitDecoratorMetadata": true,
     // "lib": [ "es6", "dom" ],
-    // "baseUrl": "./build"
 
   },
   "include": ["src/**/*.ts"],
