@@ -161,73 +161,78 @@ export class GraphView {
   }
 
 
-  //   const byTypeBlock = (typeUri) => {
-  //     const subjs = Array.from(byType.get(typeUri));
-  //     subjs.sort();
+  byTypeBlock(byType: TypeToSubjs, typeUri: NamedNode) {
+    const subjSet = byType.get(typeUri);
+      const subjs: Array<NamedNode> = subjSet ? Array.from(subjSet) : [];
+      subjs.sort();
 
-  //     const graphCells = new Map(); // [subj, pred] : objs
-  //     const preds = new Set();
+      const graphCells = new Map<string, Set<Term>>(); // [subj, pred] : objs
+      const makeCellKey = (subj: NamedNode, pred: NamedNode) => subj.value + '|||' + pred.value;
+      const preds = new Set<NamedNode>();
 
-  //     subjs.forEach((subj) => {
-  //       graph.getQuads({ subject: new NamedNode(subj) }, (q) => {
-  //         preds.add(q.predicate.toString());
-  //         const cellKey = subj + '|||' + q.predicate.toString();
-  //         if (!graphCells.has(cellKey)) {
-  //           graphCells.set(cellKey, new Set());
-  //         }
-  //         graphCells.get(cellKey).add(q.object);
-  //       });
-  //     });
-  //     const predsList = Array.from(preds);
-  //     predsList.splice(predsList.indexOf('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'), 1);
-  //     // also pull out label, which should be used on 1st column
-  //     predsList.sort();
+      subjs.forEach((subj: NamedNode) => {
+        this.graph.forEach((q: Quad) => {
+          if (!Util.isNamedNode(q.predicate)) {
+            throw new Error();
+          }
+          preds.add(q.predicate as NamedNode);
+          const cellKey = makeCellKey(subj, q.predicate as NamedNode);
+          if (!graphCells.has(cellKey)) {
+            graphCells.set(cellKey, new Set<Term>());
+          }
+          graphCells.get(cellKey)!.add(q.object);
+        }, subj, null, null, null);
+      });
+      const predsList = Array.from(preds);
+      predsList.splice(predsList.indexOf(new NamedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type')), 1);
+      // also pull out label, which should be used on 1st column
+      predsList.sort();
 
-  //     const thead = () => {
-  //       const predColumnHead = (pred) => {
-  //         return html`<th>${rdfNode(new NamedNode(pred))}</th>`;
-  //       };
-  //       return html`
-  //               <thead>
-  //                 <tr>
-  //                   <th></th>
-  //                   ${predsList.map(predColumnHead)}
-  //                 </tr>
-  //               </thead>`;
-  //     };
+      const thead = () => {
+        const predColumnHead = (pred: NamedNode) => {
+          return html`<th>${this.nodeDisplay.getHtml(pred)}</th>`;
+        };
+        return html`
+                <thead>
+                  <tr>
+                    <th></th>
+                    ${predsList.map(predColumnHead)}
+                  </tr>
+                </thead>`;
+      };
 
-  //     const instanceRow = (subj) => {
-  //       const cell = (pred) => {
-  //         const objs = graphCells.get(subj + '|||' + pred);
-  //         if (!objs) {
-  //           return html`<td></td>`;
-  //         }
-  //         const objsList = Array.from(objs);
-  //         objsList.sort();
-  //         const draw = (obj) => {
-  //           return html`<div>${rdfNode(obj)}</div>`
-  //         };
-  //         return html`<td>${objsList.map(draw)}</td>`;
-  //       };
+      const instanceRow = (subj: NamedNode) => {
+        const cell = (pred: NamedNode) => {
+          const objs = graphCells.get(subj + '|||' + pred);
+          if (!objs) {
+            return html`<td></td>`;
+          }
+          const objsList = Array.from(objs);
+          objsList.sort();
+          const draw = (obj: Term) => {
+            return html`<div>${this.nodeDisplay.getHtml(obj)}</div>`
+          };
+          return html`<td>${objsList.map(draw)}</td>`;
+        };
 
-  //       return html`
-  //               <tr>
-  //                 <td>${rdfNode(new NamedNode(subj))}</td>
-  //                 ${predsList.map(cell)}
-  //               </tr>
-  //             `;
-  //     };
+        return html`
+                <tr>
+                  <td>${this.nodeDisplay.getHtml(subj)}</td>
+                  ${predsList.map(cell)}
+                </tr>
+              `;
+      };
 
-  //     return html`
-  //           <div>[icon] ${rdfNode(new NamedNode(typeUri))} resources</div>
-  // <div class="typeBlockScroll">
-  //           <table class="typeBlock">
-  //             ${thead()}
-  //             ${subjs.map(instanceRow)}
-  //           </table>
-  // </div>
-  //         `;
-  //   };
+      return html`
+            <div>[icon] ${this.nodeDisplay.getHtml(typeUri)} resources</div>
+            <div class="typeBlockScroll">
+            <table class="typeBlock">
+              ${thead()}
+              ${subjs.map(instanceRow)}
+            </table>
+            </div>
+          `;
+    };
 
   makeTemplate(): TemplateResult {
 
@@ -250,7 +255,7 @@ export class GraphView {
             These statements are all in the
             <span data-bind="html: $root.createCurie(graphUri())">...</span> graph.-->
           </div>
-          {typedSubjs.map(byTypeBlock)}
+          ${typedSubjs.map((t: NamedNode) => this.byTypeBlock(byType, t))}
           <div class="spoGrid">
             ${untypedSubjs.map(this._subjBlock.bind(this))}
           </div>
