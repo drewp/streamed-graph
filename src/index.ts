@@ -10,13 +10,13 @@ import { GraphView } from "./graph_view";
 import { StreamedGraphClient } from "./streamed_graph_client";
 export { StreamedGraphClient } from "./streamed_graph_client";
 
-interface VersionedGraph {
+export interface VersionedGraph {
   version: number;
   store: N3Store | undefined;
 }
 
 @customElement("streamed-graph")
-class StreamedGraph extends PolymerElement {
+export class StreamedGraph extends PolymerElement {
   @property({ type: String })
   url: string = "";
 
