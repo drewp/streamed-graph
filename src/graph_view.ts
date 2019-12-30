@@ -1,16 +1,18 @@
 import { html, TemplateResult } from 'lit-html';
-import { Quad, Term, NamedNode, N3Store } from 'n3';
+import { Quad, Term, N3Store } from 'n3';
 import { DataFactory, Util } from 'n3';
 const { namedNode } = DataFactory;
+import * as RDF from "rdf-js";
+type NamedNode = RDF.NamedNode;
 
 import { SuffixLabels } from './suffixLabels';
 // import ns from 'n3/src/IRIs';
 // const { rdf } = ns;
-const rdf = { type: "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" };
+const rdf = { type: namedNode("http://www.w3.org/1999/02/22-rdf-syntax-ns#type")};
 
 type TypeToSubjs = Map<NamedNode, Set<NamedNode>>;
 function groupByRdfType(graph: N3Store): { byType: TypeToSubjs, untyped: Set<NamedNode> } {
-  const rdfType = namedNode(rdf.type);
+  const rdfType = rdf.type;
   const byType: TypeToSubjs = new Map();
   const untyped: Set<NamedNode> = new Set(); // subjs
   const internSubjs = new Map<string, NamedNode>();
@@ -52,7 +54,7 @@ class NodeDisplay {
   constructor(labels: SuffixLabels) {
     this.labels = labels;
   }
-  getHtml(n: Term): TemplateResult {
+  getHtml(n: Term|NamedNode): TemplateResult {
     if (n.termType == "Literal") {
       let dtPart: any = "";
       if (n.datatype) {
@@ -184,7 +186,7 @@ export class GraphView {
         }, subj, null, null, null);
       });
       const predsList = Array.from(preds);
-      predsList.splice(predsList.indexOf(new NamedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type')), 1);
+      predsList.splice(predsList.indexOf(rdf.type), 1);
       // also pull out label, which should be used on 1st column
       predsList.sort();
 
