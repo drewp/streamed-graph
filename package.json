@@ -1,10 +1,8 @@
 {
   "name": "streamed-graph",
   "version": "0.0.2",
-  "main": "build/bundle.js",
   "types": "build/index.d.ts",
-  "files": [ "build/" ],
-  "module": "build/streamed-graph",
+  "module": "build/bundle",
   "scripts": {
     "build": "rollup -c",
     "build_forever": "rollup -cw",
