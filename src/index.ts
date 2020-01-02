@@ -36,7 +36,7 @@ export class StreamedGraph extends PolymerElement {
 
   static get template() {
     return html`
-      <link rel="stylesheet" href="../src/streamed-graph.css" />
+      <link rel="stylesheet" href="/rdf/streamed-graph.css" />
       <div id="ui">
         <span class="expander"
           ><button on-click="toggleExpand">{{expandAction}}</button></span
