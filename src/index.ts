@@ -1,14 +1,10 @@
-// these are just for timebank- move them out
-import "@polymer/polymer/lib/elements/dom-bind.js";
-
+import { customElement, property, computed } from "@polymer/decorators";
+import { N3Store } from "n3";
 import { PolymerElement, html } from "@polymer/polymer";
 import { render } from "lit-html";
-import { N3Store } from "n3";
-import { customElement, property, computed } from "@polymer/decorators";
 
 import { GraphView } from "./graph_view";
 import { StreamedGraphClient } from "./streamed_graph_client";
-export { StreamedGraphClient } from "./streamed_graph_client";
 
 export interface VersionedGraph {
   version: number;

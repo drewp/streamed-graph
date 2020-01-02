@@ -3,7 +3,7 @@ from invoke import task  # pytype: disable=import-error
 
 @task
 def setup_npm(ctx):
-    ctx.run('npm run install')
+    ctx.run('npm install')
 
 @task
 def serve_demo(ctx):
