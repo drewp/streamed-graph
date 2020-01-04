@@ -16,7 +16,7 @@ export class StreamedGraph extends PolymerElement {
   @property({ type: String })
   url: string = "";
 
-  @property({ type: Object })
+  @property({ type: Object, notify: true })
   graph!: VersionedGraph;
 
   @property({ type: Boolean })
