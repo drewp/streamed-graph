@@ -6,24 +6,60 @@ const { literal, quad, namedNode } = DataFactory;
 // const { rdf } = ns;
 const rdf = { type: "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" };
 
-function _emitQuad(
+function parseObjNode(obj: any) {
+  if (obj["@id"]) {
+    return namedNode(obj["@id"]);
+  } else {
+    if (obj["@value"] === undefined) {
+      throw new Error("no @id or @value");
+    }
+    return literal(obj["@value"], obj["@language"] || obj["@type"]);
+  }
+}
+
+function parsePred(
   onQuad: (q: Quad) => void,
+  graphNode: NamedNode,
   subjNode: NamedNode,
-  pred: string,
-  subj: any,
-  graphNode: NamedNode
+  predKey: string,
+  subjGroup: any
 ) {
   let predNode: NamedNode;
-  if (pred === "@type") {
-    predNode = namedNode(rdf.type);
-  } else {
-    predNode = namedNode(pred);
+  if (predKey === "@type") {
+    onQuad(
+      quad(
+        subjNode,
+        namedNode(rdf.type),
+        namedNode(subjGroup["@type"]),
+        graphNode
+      )
+    );
+    return;
   }
-  subj[pred as string].forEach(function(obj: any) {
-    const objNode = obj["@id"]
-      ? namedNode(obj["@id"])
-      : literal(obj["@value"], obj["@language"] || obj["@type"]);
+  predNode = namedNode(predKey);
+  subjGroup[predKey].forEach(function(obj: any) {
+    const objNode = parseObjNode(obj);
     onQuad(quad(subjNode, predNode, objNode, graphNode));
+  });
+}
+function parseSubj(
+  onQuad: (q: Quad) => void,
+  graphNode: NamedNode,
+  subjGroup: { [predOrId: string]: any }
+) {
+  const subjNode = namedNode(subjGroup["@id"]);
+  for (let predKey in subjGroup) {
+    if (predKey === "@id") {
+      continue;
+    }
+    parsePred(onQuad, graphNode, subjNode, predKey, subjGroup);
+  }
+}
+function parseGraph(onQuad: (q: Quad) => void, g: JsonLd) {
+  var graph = (g as { "@id": string })["@id"];
+  var graphNode = namedNode(graph);
+  (g as { "@graph": JsonLdArray })["@graph"].forEach(subj => {
+    parseSubj(onQuad, graphNode, subj);
   });
 }
 
@@ -32,20 +68,5 @@ export async function eachJsonLdQuad(
   onQuad: (q: Quad) => void
 ) {
   const expanded = await jsonld.expand(jsonLdObj);
-
-  (expanded as JsonLdArray).forEach(function(g: JsonLd) {
-    var graph = (g as { "@id": string })["@id"];
-    var graphNode = namedNode(graph);
-    (g as { "@graph": JsonLdArray })["@graph"].forEach(function(subj: {
-      [predOrId: string]: any;
-    }) {
-      const subjNode = namedNode(subj["@id"]);
-      for (let pred in subj) {
-        if (pred === "@id") {
-          continue;
-        }
-        _emitQuad(onQuad, subjNode, pred, subj, graphNode);
-      }
-    });
-  });
+  (expanded as JsonLdArray).forEach((g: JsonLd) => parseGraph(onQuad, g));
 }

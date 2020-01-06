@@ -16,7 +16,7 @@ div#ui {
 div#graphView {
 }
 div a {
-  color: #007;
+  color: rgb(66, 66, 200);
 }
 .expander {
   display: inline-block;
