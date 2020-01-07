@@ -11,23 +11,23 @@
     "alwaysStrict": true,
 
     "types": ["jest"],
-    
+
     "module": "ES6",
-    "target": "ES6", 
+    "target": "ES6",
     "moduleResolution": "node",
     "sourceMap": true,
     "declaration": true,
     "experimentalDecorators": true,
     "allowJs": true,
     "esModuleInterop": true,
+    "traceResolution": true,
     // "allowSyntheticDefaultImports": true,
     // "rootDir": ".",
     // "outDir": "./build",
     // "baseUrl": "./build"
     // "emitDecoratorMetadata": true,
     // "lib": [ "es6", "dom" ],
-
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts"]
   // "exclude": ["src/**/*.test.ts"]
 }
