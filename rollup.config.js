@@ -16,7 +16,7 @@ export default [
   {
     input: "src/index.ts",
     output: {
-      file: "build/bundle.js",
+      file: "build/lib.bundle.js",
       format: "esm",
       intro: `const ${workaround_some_browser_detector}, ${workaround_jsonld_module_system_picker};`
     },
@@ -33,6 +33,26 @@ export default [
         extensions: [".js", ".ts"],
         browser: true,
         only: ["streamed-graph"]
+      }),
+      typescript(),
+      postcss({
+        inject: false
+      }),
+      commonjs(workaround_jsonld_expand_issue)
+    ]
+  },{
+    input: "src/index.ts",
+    output: {
+      file: "build/element.bundle.js",
+      format: "esm",
+      intro: `const ${workaround_some_browser_detector}, ${workaround_jsonld_module_system_picker};`
+    },
+    external: [],
+    plugins: [
+      builtins(),
+      resolve({
+        extensions: [".js", ".ts"],
+        browser: true,
       }),
       typescript(),
       postcss({

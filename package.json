@@ -2,7 +2,7 @@
   "name": "streamed-graph",
   "version": "0.0.2",
   "types": "build/index.d.ts",
-  "module": "build/bundle",
+  "module": "build/lib.bundle",
   "scripts": {
     "build": "rollup -c",
     "build_forever": "rollup -cw",

@@ -27,5 +27,4 @@ def test_forever(ctx):
 
 @task(pre=[build])
 def install(ctx):
-    ctx.run(f'cp build/bundle.js         /my/site/homepage/www/rdf/streamed-graph.bundle.js')
-    ctx.run(f'cp src/streamed-graph.css  /my/site/homepage/www/rdf/streamed-graph.css')
+    ctx.run(f'cp build/element.bundle.js /my/site/homepage/www/rdf/streamed-graph.bundle.js')
