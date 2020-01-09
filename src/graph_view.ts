@@ -1,5 +1,5 @@
 import { html, TemplateResult } from "lit-html";
-import { Quad, Term, N3Store } from "n3";
+import { Quad, Term, N3Store, Literal } from "n3";
 import { DataFactory, Util } from "n3";
 const { namedNode } = DataFactory;
 import * as RDF from "rdf-js";
@@ -71,7 +71,8 @@ class NodeDisplay {
     this.labels = labels;
   }
   getHtml(n: Term | NamedNode): TemplateResult {
-    if (n.termType == "Literal") {
+    if (Util.isLiteral(n)) {
+      n = n as Literal;
       let dtPart: any = "";
       if (n.datatype) {
         dtPart = html`
@@ -85,7 +86,8 @@ class NodeDisplay {
       `;
     }
 
-    if (n.termType == "NamedNode") {
+    if (Util.isNamedNode(n)) {
+      n = n as NamedNode;
       let shortened = false;
       let uriValue: string = n.value;
       for (let [long, short] of [
@@ -94,7 +96,7 @@ class NodeDisplay {
         ["http://purl.org/dc/elements/1.1/", "dc:"],
         ["http://www.w3.org/2001/XMLSchema#", "xsd:"]
       ]) {
-        if (uriValue?.startsWith(long)) {
+        if (uriValue.startsWith(long)) {
           uriValue = short + uriValue.substr(long.length);
           shortened = true;
           break;
