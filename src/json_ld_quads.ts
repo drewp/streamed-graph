@@ -26,14 +26,9 @@ function parsePred(
 ) {
   let predNode: NamedNode;
   if (predKey === "@type") {
-    onQuad(
-      quad(
-        subjNode,
-        namedNode(rdf.type),
-        namedNode(subjGroup["@type"]),
-        graphNode
-      )
-    );
+    subjGroup["@type"].forEach((aType: string) => {
+      onQuad(quad(subjNode, namedNode(rdf.type), namedNode(aType), graphNode));
+    });
     return;
   }
   predNode = namedNode(predKey);
