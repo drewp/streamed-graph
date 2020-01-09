@@ -24,7 +24,7 @@
     // "allowSyntheticDefaultImports": true,
     // "rootDir": ".",
     // "outDir": "./build",
-    // "baseUrl": "./build"
+    "baseUrl": "."
     // "emitDecoratorMetadata": true,
     // "lib": [ "es6", "dom" ],
   },

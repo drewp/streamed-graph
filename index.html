@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html>
-
-<body>
-  <h1>streamed-graph demo</h1>
-  <script type="module" src="./build/bundle.js"></script>
-  <streamed-graph url="http://bang:9075/graph/events" expanded="true"></streamed-graph>
-</body>
-
+  <body>
+    <h1>streamed-graph demo</h1>
+    <script type="module" src="./build/demo.js"></script>
+    <dom-bind>
+      <template>
+        <streamed-graph
+          url="http://bang:9075/graph/events"
+          expanded="true"
+        ></streamed-graph>
+      </template>
+    </dom-bind>
+  </body>
 </html>

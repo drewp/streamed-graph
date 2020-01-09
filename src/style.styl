@@ -1,0 +1,135 @@
+@import url('https://fonts.googleapis.com/css?family=Allerta|Dosis|Jura&display=swap')
+
+:host
+  display: flex
+  flex-direction: column
+  padding: 2px 0
+
+#ui // layout
+  display: inline-block
+  width: 30em
+
+  button
+    width: 2em
+
+  .expander
+    display: inline-block
+    padding: 3px
+
+#graphView // layout
+  section
+    padding: 4px
+
+  .spoGrid
+    display: flex
+    flex-direction: column
+
+  .subject, .predicate
+    display: flex
+    align-items: baseline
+
+  .predicate, .object
+    margin-left: 5px
+
+  .literal
+    display: inline-block
+    margin: 3px
+    padding: 4px
+
+  .literalType
+    vertical-align: super
+    font-size: 80%
+
+  .resource
+    display: inline-block
+    margin: 2px
+    padding: 1px 6px
+
+  .predicate > a::before
+    padding-right: 2px
+    content: '━'
+    font-weight: bolder
+    font-size: 125%
+
+  .predicate > a::after
+    content: '🠪'
+
+  table.typeBlock
+    border-collapse: collapse
+
+  table.typeBlock td
+    white-space: nowrap
+
+  table.typeBlock td .literal
+    padding-top: 1px
+    padding-bottom: 1px
+
+  .typeBlockScroll
+    overflow-x: auto
+    max-width: 100%
+
+// ///////////////////////////////////////////////////////////////////
+a
+  color: #b1b1fd
+  text-shadow: 1px 1px 0px #0400ff94
+  text-decoration-color: #00007714
+
+body.rdfBrowsePage
+  background: black
+  color: white
+  font-size: 12px
+
+#ui // color
+  border: 1px solid gray
+  background: black
+  color: white
+  font-family: 'Allerta', sans-serif
+
+#graphView // color
+  background: black
+  color: white
+  font-family: 'Allerta', sans-serif
+
+  section
+    border: 1px solid gray
+
+  .subject
+    border-top: 1px solid #2f2f2f
+
+  .literal
+    border: 1px solid gray
+    border-radius: 9px
+    font-size: 115%
+    font-family: monospace
+
+  .subject > .node
+    border: 2px solid rgb(68, 141, 68)
+
+  .resource
+    border-radius: 6px
+    background: lightblue
+
+  .predicate > a
+    color: #e49dfb
+
+  .comment
+    color: green
+
+  table.typeBlock th
+    border: 2px #333333 outset
+    background: #1f1f1f
+
+  table.typeBlock td
+    border: 2px #4a4a4a outset
+    background: #2b2b2b
+
+/*
+for my pages serving rdf data, not necessarily part of browse/
+*/
+.served-resources
+  margin-top: 4em
+  padding-top: 1em
+  border-top: 1px solid gray
+
+.served-resources a
+  padding-right: 2em

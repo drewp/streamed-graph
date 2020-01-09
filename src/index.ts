@@ -6,9 +6,18 @@ import { render } from "lit-html";
 import { GraphView } from "./graph_view";
 import { StreamedGraphClient } from "./streamed_graph_client";
 
+import style from "./style.styl";
+
 export interface VersionedGraph {
   version: number;
   store: N3Store | undefined;
+}
+
+function templateWithStyle(style: string, tmpl: HTMLTemplateElement) {
+  const styleEl = document.createElement("style");
+  styleEl.textContent = style;
+  tmpl.content.insertBefore(styleEl, tmpl.content.firstChild);
+  return tmpl;
 }
 
 @customElement("streamed-graph")
@@ -31,26 +40,28 @@ export class StreamedGraph extends PolymerElement {
   status: string = "";
 
   sg!: StreamedGraphClient;
-  graphView!: Element;
+  graphViewEl!: Element;
   graphViewDirty = true;
 
   static get template() {
-    return html`
-      <link rel="stylesheet" href="/rdf/streamed-graph.css" />
-      <div id="ui">
-        <span class="expander"
-          ><button on-click="toggleExpand">{{expandAction}}</button></span
-        >
-        StreamedGraph <a href="{{url}}">[source]</a>: {{status}}
-      </div>
-      <div id="graphView"></div>
-    `;
+    return templateWithStyle(
+      style,
+      html`
+        <div id="ui">
+          <span class="expander"
+            ><button on-click="toggleExpand">{{expandAction}}</button></span
+          >
+          StreamedGraph <a href="{{url}}">[source]</a>: {{status}}
+        </div>
+        <div id="graphView"></div>
+      `
+    );
   }
 
   ready() {
     super.ready();
     this.graph = { version: -1, store: undefined };
-    this.graphView = (this.shadowRoot as ShadowRoot).getElementById(
+    this.graphViewEl = (this.shadowRoot as ShadowRoot).getElementById(
       "graphView"
     ) as Element;
 
@@ -66,7 +77,7 @@ export class StreamedGraph extends PolymerElement {
       this.redrawGraph();
     } else {
       this.graphViewDirty = false;
-      render(null, this.graphView);
+      this._graphAreaClose();
     }
   }
 
@@ -102,18 +113,27 @@ export class StreamedGraph extends PolymerElement {
     if (!this.graphViewDirty) return;
 
     if ((this.graph as VersionedGraph).store && this.graph.store) {
-      render(
-        new GraphView(this.url, this.graph.store).makeTemplate(),
-        this.graphView
-      );
+      this._graphAreaShowGraph(new GraphView(this.url, this.graph.store));
       this.graphViewDirty = false;
     } else {
-      render(
-        html`
-          <span>waiting for data...</span>
-        `,
-        this.graphView
-      );
+      this._graphAreaShowPending();
     }
+  }
+
+  _graphAreaClose() {
+    render(null, this.graphViewEl);
+  }
+
+  _graphAreaShowPending() {
+    render(
+      html`
+        <span>waiting for data...</span>
+      `,
+      this.graphViewEl
+    );
+  }
+
+  _graphAreaShowGraph(graphView: GraphView) {
+    render(graphView.makeTemplate(), this.graphViewEl);
   }
 }
