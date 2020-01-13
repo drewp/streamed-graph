@@ -7,6 +7,7 @@ import { GraphView } from "./graph_view";
 import { StreamedGraphClient } from "./streamed_graph_client";
 
 import style from "./style.styl";
+export * from "./graph_queries";
 
 export interface VersionedGraph {
   version: number;
