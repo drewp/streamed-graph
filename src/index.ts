@@ -5,13 +5,14 @@ import { render } from "lit-html";
 
 import { GraphView } from "./graph_view";
 import { StreamedGraphClient } from "./streamed_graph_client";
+import { Store } from "n3";
 
 import style from "./style.styl";
 export * from "./graph_queries";
 
 export interface VersionedGraph {
   version: number;
-  store: N3Store | undefined;
+  store: N3Store;
 }
 
 function templateWithStyle(style: string, tmpl: HTMLTemplateElement) {
@@ -61,7 +62,8 @@ export class StreamedGraph extends PolymerElement {
 
   ready() {
     super.ready();
-    this.graph = { version: -1, store: undefined };
+    const emptyStore = new Store();
+    this.graph = { version: -1, store: emptyStore };
     this.graphViewEl = (this.shadowRoot as ShadowRoot).getElementById(
       "graphView"
     ) as Element;
