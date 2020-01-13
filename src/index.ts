@@ -110,6 +110,9 @@ export class StreamedGraph extends PolymerElement {
     if (this.expanded) {
       this.redrawGraph();
     }
+    this.dispatchEvent(
+      new CustomEvent("graph-changed", { detail: { graph: this.graph } })
+    );
   }
 
   _redrawLater() {
