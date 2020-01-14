@@ -3,7 +3,6 @@
   "version": "0.0.2",
   "types": "build/index.d.ts",
   "module": "build/lib.bundle",
-  "elementModule": "build/element.bundle",
   "scripts": {
     "build": "rollup -c",
     "build_forever": "rollup -cw",
