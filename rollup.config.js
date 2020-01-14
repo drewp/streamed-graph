@@ -40,26 +40,6 @@ export default [
       }),
       commonjs(workaround_jsonld_expand_issue)
     ]
-  },{
-    input: "src/index.ts",
-    output: {
-      file: "build/element.bundle.js",
-      format: "esm",
-      intro: `const ${workaround_some_browser_detector}, ${workaround_jsonld_module_system_picker};`
-    },
-    external: [],
-    plugins: [
-      builtins(),
-      resolve({
-        extensions: [".js", ".ts"],
-        browser: true,
-      }),
-      typescript(),
-      postcss({
-        inject: false
-      }),
-      commonjs(workaround_jsonld_expand_issue)
-    ]
   },
   {
     input: "src/demo.ts",
