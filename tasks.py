@@ -2,8 +2,8 @@ from invoke import task  # pytype: disable=import-error
 
 
 @task
-def setup_npm(ctx):
-    ctx.run('npm install')
+def setup_js(ctx):
+    ctx.run('pnpm install')
 
 @task
 def serve_demo(ctx):
@@ -11,20 +11,16 @@ def serve_demo(ctx):
 
 @task
 def build(ctx):
-    ctx.run(f'npm run build', pty=True)
+    ctx.run(f'pnpm run build', pty=True)
 
 @task
 def build_forever(ctx):
-    ctx.run(f'npm run build_forever', pty=True)
+    ctx.run(f'pnpm run build_forever', pty=True)
 
 @task
 def test(ctx):
-    ctx.run(f'npm run test', pty=True)
+    ctx.run(f'pnpm run test', pty=True)
 
 @task
 def test_forever(ctx):
-    ctx.run(f'npm run test_forever', pty=True)
-
-@task(pre=[build])
-def install(ctx):
-    ctx.run(f'cp build/element.bundle.js /my/site/homepage/www/rdf/streamed-graph.bundle.js')
+    ctx.run(f'pnpm run test_forever', pty=True)
