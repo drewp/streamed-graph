@@ -1,13 +1,13 @@
-import { customElement, property, computed } from "@polymer/decorators";
-import { N3Store } from "n3";
 import { PolymerElement, html } from "@polymer/polymer";
+import { customElement, property, computed } from "@polymer/decorators";
 import { render } from "lit-html";
+
+import { N3Store, Store } from "n3";
 
 import { GraphView } from "./graph_view";
 import { StreamedGraphClient } from "./streamed_graph_client";
-import { Store } from "n3";
-
 import style from "./style.styl";
+
 export * from "./graph_queries";
 
 export interface VersionedGraph {
