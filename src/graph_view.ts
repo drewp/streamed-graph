@@ -6,6 +6,7 @@ import * as RDF from "rdf-js";
 type NamedNode = RDF.NamedNode;
 
 import { SuffixLabels } from "./suffixLabels";
+import { Quad_Object } from "n3";
 // import ns from 'n3/src/IRIs';
 // const { rdf } = ns;
 const rdf = {
@@ -30,9 +31,9 @@ function groupByRdfType(
       let subjType: NamedNode | null = null;
 
       graph.forObjects(
-        (o: Quad) => {
-          if (Util.isNamedNode(o.object)) {
-            subjType = o.object as NamedNode;
+        (o: Quad_Object) => {
+          if (Util.isNamedNode(o)) {
+            subjType = o as NamedNode;
           }
         },
         subj,
