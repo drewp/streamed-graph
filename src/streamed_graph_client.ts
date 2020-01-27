@@ -11,6 +11,7 @@ export class StreamedGraphClient {
   onStatus: (msg: string) => void;
   onGraphChanged: () => void;
   store: N3Store;
+  _deletedCount: number = 0;
   events!: EventSource;
   constructor(
     eventsUrl: string,
@@ -39,6 +40,11 @@ export class StreamedGraphClient {
     //                 // parse with n3, add to output
     //             });
     //     });
+  }
+
+  _vacuum() {
+    // workaround for the growing _ids map
+    this.store = new Store(this.store.getQuads(null, null, null, null));
   }
 
   reconnectOnWake() {
@@ -97,8 +103,16 @@ export class StreamedGraphClient {
   async patchGraph(patchJson: string) {
     var patch = JSON.parse(patchJson).patch;
 
-    await eachJsonLdQuad(patch.deletes, this.store.removeQuad.bind(this.store));
+    await eachJsonLdQuad(patch.deletes, quad => {
+      this.store.removeQuad(quad);
+      this._deletedCount++;
+    });
     await eachJsonLdQuad(patch.adds, this.store.addQuad.bind(this.store));
+
+    if (this._deletedCount > 100) {
+      this._vacuum();
+      this._deletedCount = 0;
+    }
   }
 
   close() {
