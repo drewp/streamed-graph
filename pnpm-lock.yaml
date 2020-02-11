@@ -2,12 +2,11 @@ dependencies:
   '@polymer/decorators': 3.0.0
   '@polymer/polymer': 3.3.1
   '@types/jsonld': 1.5.0
-  '@types/n3': 1.1.4
-  jsonld: 2.0.1
+  '@types/n3': 1.1.5
+  jsonld: 2.0.2
   lit-html: 1.1.2
   n3: 1.3.5
   rdf-js: 1.0.2
-  readable-stream: 3.4.0
 devDependencies:
   '@rollup/plugin-commonjs': 11.0.1_rollup@1.29.0
   '@rollup/plugin-node-resolve': 7.0.0_rollup@1.29.0
@@ -450,13 +449,13 @@ packages:
     dev: false
     resolution:
       integrity: sha512-EG2N8JLQ1xDfO6Z/1QRdiUcYX3428CqVRqmY7LyK5or5J1RQ16dpKH6qQ4umVD0vBHU47xHlMeyMbQ6o+6tiYg==
-  /@types/n3/1.1.4:
+  /@types/n3/1.1.5:
     dependencies:
       '@types/node': 13.1.7
       '@types/rdf-js': 2.0.8
     dev: false
     resolution:
-      integrity: sha512-pznxeZY3Or+DoGLtD/y1Z2yQRrFooe8T0oA2Lcko76h3pvZJ1tB7BnB+K4xETE2AwgRxjRFZnterhMb6XU7s1Q==
+      integrity: sha512-FaW94FyqTIrPP3ZEiwX745xQhzeoTlNiFsXjxPWsKBd+yvBtIW3ykd9kGnGWI/jz2Rp2iFKto3Tc+IcBL6a6yA==
   /@types/node/13.1.7:
     resolution:
       integrity: sha512-HU0q9GXazqiKwviVxg9SI/+t/nAsGkvLDkIdxz+ObejG2nX6Si00TeLqHMoS+a/1tjH7a8YpKVQwtgHuMQsldg==
@@ -3284,6 +3283,7 @@ packages:
     resolution:
       integrity: sha1-Yzwsg+PaQqUC9SRmAiSA9CCCYd4=
   /inherits/2.0.4:
+    dev: true
     resolution:
       integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
   /inline-source-map/0.6.2:
@@ -3908,6 +3908,9 @@ packages:
       node: '>=6'
     peerDependencies:
       jest-resolve: '*'
+    peerDependenciesMeta:
+      jest-resolve:
+        optional: true
     resolution:
       integrity: sha512-pgFw2tm54fzgYvc/OHrnysABEObZCUNFnhjoRjaVOCN8NYc032/gVjPaHD4Aq6ApkSieWtfKAFQtmDKAmhupnQ==
   /jest-regex-util/24.9.0:
@@ -4205,7 +4208,7 @@ packages:
     dev: true
     resolution:
       integrity: sha1-LHS27kHZPKUbe1qu6PUDYx0lKnM=
-  /jsonld/2.0.1:
+  /jsonld/2.0.2:
     dependencies:
       canonicalize: 1.0.1
       lru-cache: 5.1.1
@@ -4217,7 +4220,7 @@ packages:
     engines:
       node: '>=6'
     resolution:
-      integrity: sha512-37NIP09U0AnLu94b7ktsgHxZflAqDH8wn2kcLeAjxcL3sbuwJZ1IxIIbWyjSzrKojADWnoZM/btAWlrcGDMgJA==
+      integrity: sha512-/TQzRe75/3h2khu57IUojha5oat+M82bm8RYw0jLhlmmPrW/kTWAZ9nGzKPfZWnPYnVVJJMQVc/pU8HCmpv9xg==
   /jsonparse/1.3.1:
     dev: true
     engines:
@@ -5753,16 +5756,6 @@ packages:
     dev: true
     resolution:
       integrity: sha512-Ebho8K4jIbHAxnuxi7o42OrZgF/ZTNcsZj6nRKyUmkhLFq8CHItp/fy6hQZuZmP/n3yZ9VBUbp4zz/mX8hmYPw==
-  /readable-stream/3.4.0:
-    dependencies:
-      inherits: 2.0.4
-      string_decoder: 1.3.0
-      util-deprecate: 1.0.2
-    dev: false
-    engines:
-      node: '>= 6'
-    resolution:
-      integrity: sha512-jItXPLmrSR8jmTRmRWJXCnGJsfy85mB3Wd/uINMXA65yrnFo0cPClFIUWzo2najVNSl+mx7/4W8ttlLWJe99pQ==
   /readdirp/2.2.1:
     dependencies:
       graceful-fs: 4.2.3
@@ -6462,12 +6455,6 @@ packages:
     dev: true
     resolution:
       integrity: sha512-n/ShnvDi6FHbbVfviro+WojiFzv+s8MPMHBczVePfUpDJLwoLT0ht1l4YwBCbi8pJAveEEdnkHyPyTP/mzRfwg==
-  /string_decoder/1.3.0:
-    dependencies:
-      safe-buffer: 5.2.0
-    dev: false
-    resolution:
-      integrity: sha512-hkRX8U1WjJFd8LsDJ2yQ/wWWxaopEsABU1XfkM8A+j0+85JAGppt16cr1Whg6KIbb4okU6Mql6BOj+uup/wKeA==
   /strip-ansi/3.0.1:
     dependencies:
       ansi-regex: 2.1.1
@@ -6858,6 +6845,7 @@ packages:
     resolution:
       integrity: sha1-K1viOjK2Onyd640PKNSFcko98ZA=
   /util-deprecate/1.0.2:
+    dev: true
     resolution:
       integrity: sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=
   /util.promisify/1.0.0:
@@ -7093,15 +7081,14 @@ specifiers:
   '@rollup/plugin-replace': ^2.3.0
   '@types/jest': ^24.0.25
   '@types/jsonld': ^1.5.0
-  '@types/n3': ^1.1.3
+  '@types/n3': ^1.1.5
   '@types/rollup-plugin-postcss': ^2.0.0
   jest: ^24.9.0
-  jsonld: ^2.0.1
+  jsonld: ^2.0.2
   lit-html: ^1.1.2
   n3: ^1.3.5
   node-globals: ^0.1.5
   rdf-js: ^1.0.2
-  readable-stream: ^3.4.0
   rollup: ^1.29.0
   rollup-plugin-node-builtins: ^2.1.2
   rollup-plugin-postcss: ^2.0.3
