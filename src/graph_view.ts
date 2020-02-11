@@ -1,9 +1,7 @@
 import { html, TemplateResult } from "lit-html";
-import { Quad, Term, N3Store, Literal } from "n3";
+import { Quad, Term, N3Store, Literal, Quad_Object, NamedNode } from "n3";
 import { DataFactory, Util } from "n3";
 const { namedNode } = DataFactory;
-import * as RDF from "rdf-js";
-type NamedNode = RDF.NamedNode;
 
 import { SuffixLabels } from "./suffixLabels";
 // import ns from 'n3/src/IRIs';
@@ -13,6 +11,7 @@ const rdf = {
 };
 
 type TypeToSubjs = Map<NamedNode, Set<NamedNode>>;
+// When there are multiple types, an arbitrary one is used.
 function groupByRdfType(
   graph: N3Store
 ): { byType: TypeToSubjs; untyped: Set<NamedNode> } {
@@ -30,10 +29,8 @@ function groupByRdfType(
       let subjType: NamedNode | null = null;
 
       graph.forObjects(
-        (o: Quad) => {
-          if (Util.isNamedNode(o.object)) {
-            subjType = o.object as NamedNode;
-          }
+        (o: Quad_Object) => {
+            subjType = o as NamedNode;
         },
         subj,
         rdfType,
